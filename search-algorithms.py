@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys
-from Queue import PriorityQueue
+from queue import PriorityQueue
+# from queue import PriorityQueue
+# étrange sur le portable avec la même version de python il faut un q minuscule à queue
+# comme si on était en 2.*
+
 
 sys.setrecursionlimit(10000)
 
@@ -141,7 +145,6 @@ print_solution(solution)
 print('uniform_cost_search')
 solution = uniform_cost_search(problem)
 print_solution(solution)
-
 
 
 
