@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# python 3.7
 import sys
 from queue import PriorityQueue
 # from queue import PriorityQueue
@@ -46,6 +47,7 @@ def backtraking_search(problem):
 
 	def recurse(state, history, total_cost):
 		global best_total_cost , best_history
+		# Nécessité de placer les variables globales à tous les niveaux pour les fonctions imbriquées
 		if problem.is_end(state):
 			if total_cost < best_total_cost :
 				best_total_cost = total_cost
@@ -104,6 +106,7 @@ def uniform_cost_search(problem):
 	# A la frontière on stocke le noeud (state) et le coût pour y arriver
 	# PriorityQueue element : (priority_number, data), ici (path_cost, state, history)
 	# (cost of reaching state, current state, history of states visited)
+	# history of states visited = [(action, new_state, cost)]
 	frontier = PriorityQueue()
 
 	# Initialisation de la frontière
