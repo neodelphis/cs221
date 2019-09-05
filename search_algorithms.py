@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # python 3.7
 import sys
-from queue import PriorityQueue
+from Queue import PriorityQueue
 # from queue import PriorityQueue
 # étrange sur le portable avec la même version de python il faut un q minuscule à queue
 # comme si on était en 2.*
@@ -18,8 +18,9 @@ class TransportationProblem(object):
 	tram: coût 2, avance à 2s 
 	"""
 
-	def __init__(self, N):
+	def __init__(self, N, weights = {'walk':0, 'tram':0}):
 		self.N = N
+		self.weights = weights
 
 	def start_state(self):
 		return 1
@@ -34,9 +35,9 @@ class TransportationProblem(object):
 		"""
 		successor = []
 		if state+1 <= self.N:
-			successor.append(('walk', state+1, 1))
+			successor.append(('walk', state+1, self.weights['walk']))
 		if 2*state <= self.N:
-			successor.append(('tram', 2*state, 2))
+			successor.append(('tram', 2*state, self.weights['tram']))
 		return successor
 
 
@@ -134,20 +135,33 @@ def print_solution(solution):
 		print(item)	
 
 
-# Appel à notre fonction
-problem = TransportationProblem(100)
+# # Appel à notre fonction
+# problem = TransportationProblem(300)
 
-print('backtraking_search')
-solution = backtraking_search(problem)
-print_solution(solution)
 
-print('dynamic_programming')
-solution = dynamic_programming(problem)
-print_solution(solution)
 
-print('uniform_cost_search')
-solution = uniform_cost_search(problem)
-print_solution(solution)
+# from timeit import default_timer as timer
+
+# start = timer()
+# print('backtraking_search')
+# solution = backtraking_search(problem)
+# print_solution(solution)
+# end = timer()
+# print(end - start) # Time in seconds, e.g. 5.38091952400282
+
+# start = timer()
+# print('dynamic_programming')
+# solution = dynamic_programming(problem)
+# print_solution(solution)
+# end = timer()
+# print(end - start)
+
+# start = timer()
+# print('uniform_cost_search')
+# solution = uniform_cost_search(problem)
+# print_solution(solution)
+# end = timer()
+# print(end - start)
 
 
 
