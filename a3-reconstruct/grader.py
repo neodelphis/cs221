@@ -277,7 +277,7 @@ def add_parts_2(grader, submission):
 def add_parts_3(grader, submission):
 
 
-    if grader.selectedPartName in ['3b-2-basic', '3b-3-hidden', '3b-5-hidden', None]:  # avoid timeouts
+    if grader.selectedPartName in ['3b-2-basic', '3b-3-hidden', '3b-5-hidden', '3b-test', None]:  # avoid timeouts
         unigramCost, bigramCost, possibleFills = getRealCosts()
 
     def t_3b_1():
@@ -382,8 +382,28 @@ def add_parts_3(grader, submission):
             query = wordsegUtil.cleanLine(query)
             parts = [wordsegUtil.removeAll(w, 'aeiou') for w in wordsegUtil.words(query)]
             pred = [submission.segmentAndInsert(part, smoothCost, possibleFills) for part in parts]
+            #pred = [submission.segmentAndInsert(part, bigramCost, possibleFills) for part in parts]
 
     grader.addHiddenPart('3b-5-hidden', t_3b_5, maxPoints=6, maxSeconds=3, description='hidden test case for all queries in QUERIES_BOTH with bigram costs and possible fills from the corpus')
+
+    def t_3b_test():
+        #smoothCost = wordsegUtil.smoothUnigramAndBigram(unigramCost, bigramCost, 0.2)
+        # for query in QUERIES_BOTH:
+        #     query = wordsegUtil.cleanLine(query)
+        #     parts = [wordsegUtil.removeAll(w, 'aeiou') for w in wordsegUtil.words(query)]
+        #     #pred = [submission.segmentAndInsert(part, smoothCost, possibleFills) for part in parts]
+        #     pred = [submission.segmentAndInsert(part, bigramCost, possibleFills) for part in parts]
+        #unigramCost, bigramCost, possibleFills = getRealCosts()
+
+        print 'u zk', unigramCost('zk')
+        print 'b zk', bigramCost(wordsegUtil.SENTENCE_BEGIN,'zk')
+        print 'z', bigramCost(wordsegUtil.SENTENCE_BEGIN,'z')
+        print 'the', bigramCost(wordsegUtil.SENTENCE_BEGIN,'the')
+        print 'the the', bigramCost('the','the')
+        print 'the big', bigramCost('the','big')
+
+    grader.addHiddenPart('3b-test', t_3b_test, description='debugging tests')
+
 
 add_parts_1(grader, submission)
 add_parts_2(grader, submission)
