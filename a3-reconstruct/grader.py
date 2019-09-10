@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 
 import graderUtil
@@ -63,7 +64,9 @@ QUERIES_BOTH = [
     'rtfclntllgnc',
 ]
 
-CORPUS = 'leo-will.txt'
+#CORPUS = 'leo-will.txt'
+CORPUS = 'victorhugo.txt'
+
 
 _realUnigramCost, _realBigramCost, _possibleFills = None, None, None
 

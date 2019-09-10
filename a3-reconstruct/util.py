@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import heapq, collections, re, sys, time, os, random
 
 ############################################################

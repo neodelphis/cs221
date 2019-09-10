@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # python 3.7
 import sys
-from Queue import PriorityQueue
+from queue import PriorityQueue
 # from queue import PriorityQueue
 # étrange sur le portable avec la même version de python il faut un q minuscule à queue
 # comme si on était en 2.*
