@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import collections, random
 
 ############################################################
@@ -24,14 +26,17 @@ class ValueIteration(MDPAlgorithm):
         mdp.computeStates()
         def computeQ(mdp, V, state, action):
             # Return Q(state, action) based on V(state).
-            return sum(prob * (reward + mdp.discount() * V[newState]) \
+            Qvalue =  sum(prob * (reward + mdp.discount() * V[newState]) \
                             for newState, prob, reward in mdp.succAndProbReward(state, action))
+            # print('Qvalue : ',Qvalue)
+            return Qvalue
 
         def computeOptimalPolicy(mdp, V):
             # Return the optimal policy given the values V.
             pi = {}
             for state in mdp.states:
-                pi[state] = max((computeQ(mdp, V, state, action), action) for action in mdp.actions(state))[1]
+                if mdp.actions(state):  # Ajout pour éviter le max d'une liste vide...
+                    pi[state] = max((computeQ(mdp, V, state, action), action) for action in mdp.actions(state))[1]
             return pi
 
         V = collections.defaultdict(float)  # state -> value of state
@@ -40,7 +45,12 @@ class ValueIteration(MDPAlgorithm):
             newV = {}
             for state in mdp.states:
                 # This evaluates to zero for end states, which have no available actions (by definition)
-                newV[state] = max(computeQ(mdp, V, state, action) for action in mdp.actions(state))
+                # print ('state : ', state)
+                # print ('mdp.actions(state) : ', mdp.actions(state))
+                if mdp.actions(state):  # Liste non vide pour que max fonctionne
+                    newV[state] = max(computeQ(mdp, V, state, action) for action in mdp.actions(state))
+                else:
+                    newV[state] = 0
             numIters += 1
             if max(abs(V[state] - newV[state]) for state in mdp.states) < epsilon:
                 V = newV
@@ -104,7 +114,9 @@ class NumberLineMDP(MDP):
 
 ############################################################
 
-
+mdp = NumberLineMDP()
+algorithm = ValueIteration()
+algorithm.solve(mdp, .001)
 
 
 ############################################################

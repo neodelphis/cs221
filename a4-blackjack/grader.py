@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 
 import random, util, collections
 import graderUtil
@@ -50,6 +52,9 @@ def test2a():
     mdp.computeStates()
     algorithm.solve(mdp, .001)
     newVal = algorithm.V[mdp.startState()]
+    print('originalVal', originalVal)
+    print('newVal', newVal)
+
 print('-'*80)
 grader.addHiddenPart('2a-hidden', test2a, 3, description="Hidden test for CounterexampleMDP. Ensure that V[startState] is greater after noise is added.")
 

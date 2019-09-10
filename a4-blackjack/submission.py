@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import util, math, random
 from collections import defaultdict
 from util import ValueIteration
@@ -15,7 +17,7 @@ class CounterexampleMDP(util.MDP):
     # Return a list of strings representing actions possible from |state|.
     def actions(self, state):
         results = []
-        if state == 'start':
+        if state is 'start':
             results.append('chance') # Chance node
             results.append('sure')   # Chance node with 100% prob
         return results
@@ -25,11 +27,11 @@ class CounterexampleMDP(util.MDP):
     # Remember that if |state| is an end state, you should return an empty list [].
     def succAndProbReward(self, state, action):
         results = []  # (newState, prob, reward)
-        if action == 'chance':
-            results.append(('end', 0.8, 1))
-            results.append(('end', 0.2, 3))
-        elif action == 'sure':
-            results.append(('end', 1, 1.5))
+        if action is 'chance':
+            results.append(('end', 0.8, 2))
+            results.append(('end', 0.2, 6))
+        elif action is 'sure':
+            results.append(('end', 1, 3))
         return results
 
     # Set the discount factor (float or integer) for your counterexample MDP.
