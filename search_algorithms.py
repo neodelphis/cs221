@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 # python 3.7
 import sys
-from queue import PriorityQueue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
+# from queue import PriorityQueue
 # from queue import PriorityQueue
 # étrange sur le portable avec la même version de python il faut un q minuscule à queue
 # comme si on était en 2.*
@@ -67,6 +71,9 @@ def backtraking_search(problem):
 
 
 def dynamic_programming(problem):
+	# Pour optimiser le temps de traitement on va stocker en cache
+	# les coûts futurs à partir de chaque noeud déjà rencontré
+	# et s'il y a plusieurs options prendre le minimum
 	cache = {}  # state => future_cost(state), action, new_state, cost
 
 	def future_cost(state):
@@ -108,7 +115,7 @@ def uniform_cost_search(problem):
 	# PriorityQueue element : (priority_number, data), ici (path_cost, state, history)
 	# (cost of reaching state, current state, history of states visited)
 	# history of states visited = [(action, new_state, cost)]
-	frontier = PriorityQueue()
+	frontier = queue.PriorityQueue()
 
 	# Initialisation de la frontière
 	history = []
@@ -136,32 +143,32 @@ def print_solution(solution):
 
 
 # # Appel à notre fonction
-# problem = TransportationProblem(300)
+problem = TransportationProblem(10, weights = {'walk':1, 'tram':2})
 
 
 
-# from timeit import default_timer as timer
+from timeit import default_timer as timer
 
 # start = timer()
 # print('backtraking_search')
 # solution = backtraking_search(problem)
 # print_solution(solution)
 # end = timer()
-# print(end - start) # Time in seconds, e.g. 5.38091952400282
+# print(end - start) # Time in seconds
 
-# start = timer()
-# print('dynamic_programming')
-# solution = dynamic_programming(problem)
-# print_solution(solution)
-# end = timer()
-# print(end - start)
+start = timer()
+print('dynamic_programming')
+solution = dynamic_programming(problem)
+print_solution(solution)
+end = timer()
+print(end - start)
 
-# start = timer()
-# print('uniform_cost_search')
-# solution = uniform_cost_search(problem)
-# print_solution(solution)
-# end = timer()
-# print(end - start)
+start = timer()
+print('uniform_cost_search')
+solution = uniform_cost_search(problem)
+print_solution(solution)
+end = timer()
+print(end - start)
 
 
 
