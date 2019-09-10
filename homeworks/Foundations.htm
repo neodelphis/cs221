@@ -1,0 +1,493 @@
+
+<!-- saved from url=(0047)http://web.stanford.edu/class/cs221/#coursework -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>CS221: Artificial Intelligence: Principles and Techniques</title>
+  <script src="http://web.stanford.edu/class/cs221/plugins/main.js"></script><script src="./Foundations_files/MathJax.js">MathJax.Hub.Config({  extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],  tex2jax: {inlineMath: [["$", "$"]]},});</script><script src="http://web.stanford.edu/class/cs221/plugins/jquery.min.js"></script><link rel="stylesheet" href="http://web.stanford.edu/class/cs221/plugins/main.css">
+  <script src="http://web.stanford.edu/class/cs221/events.js?v=3"></script>
+<style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax_LineBox {display: table!important}
+.MathJax_LineBox span {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Blank; src: url('about:blank')}
+</style></head>
+<body onload="eventsOnLoad(); fixScrollPosition()"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+
+<style>
+.cas {
+  font-size: 6pt;
+  margin: 0 auto;
+  text-align: center;
+  margin-left: 0px;
+  margin-right: auto;
+}
+
+.cas table {
+  width: 100%;
+}
+
+.cas td > div {
+  float: left;
+  min-width: 180px;
+  margin-bottom: 24px;
+}
+
+.cas img {
+object-fit: cover;
+border-radius: 100%;
+  height: 80px;
+  width: 80px;
+  margin: auto;
+}
+
+.staff img {
+object-fit: cover;
+border-radius: 100%;
+  height: 120px;
+  width: 120px;
+  margin: auto;
+}
+
+.photos {
+  margin: auto;
+  text-align: center;
+}
+
+.photos_staff {
+  margin: auto;
+  text-align: center;
+}
+</style>
+
+<div class="section">
+  <div style="float:left; clear:left">
+    <img width="90" src="http://web.stanford.edu/class/cs221/stanford_seal.gif">
+  </div>
+  <div style="margin-left: 30; margin-top: 20">
+    <div class="top assignmentTitle">
+      CS221: Artificial Intelligence: Principles and Techniques
+    </div>
+    <div class="top nav">
+    Stanford / Summer 2019
+    </div>
+    <div class="top">
+      <a class="nav" href="https://calendar.google.com/calendar/embed?src=q6h067cld3m6gnue0a1hu8go6k%40group.calendar.google.com&amp;ctz=America%2FLos_Angeles">[Calendar]</a>
+      &nbsp;
+      <a class="nav" href="http://web.stanford.edu/class/cs221/#coursework">[Coursework]</a>
+      &nbsp;
+      <a class="nav" href="http://web.stanford.edu/class/cs221/#schedule">[Schedule]</a>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="section">
+  <span class="header">Logistics</span>
+
+  <div class="section"><b>Time/location:</b>
+    <ul>
+      <li>Lectures: Tue/Thurs 3:30-5:20pm in Bishop Auditorium (<a href="https://canvas.stanford.edu/courses/103188/external_tools/3367">watch online</a>)</li>
+      <li>Sections: Fri 3:30-4:20pm in Skilling Auditorium; see <a href="https://calendar.google.com/calendar/embed?src=q6h067cld3m6gnue0a1hu8go6k%40group.calendar.google.com&amp;ctz=America%2FLos_Angeles">calendar</a> for schedule.</li>
+      <li>Office hours: CA office hours locations are TBA; see <a href="https://calendar.google.com/calendar/embed?src=q6h067cld3m6gnue0a1hu8go6k%40group.calendar.google.com&amp;ctz=America%2FLos_Angeles">calendar</a> for times; see <a href="http://web.stanford.edu/class/cs221/#officehours">[Office Hour Logistics]</a> for logistics.</li>
+    </ul>
+  </div>
+
+<div class="section">
+  <b>Instructor:</b>
+    <div class="staff" style="width: 50%; margin-right: 25%; margin-left: 10%">
+      <div class="cas">
+          <table>
+            <tbody><tr>
+              <td>
+                <div class="photos_staff"><div><img src="http://web.stanford.edu/class/cs221/photos/robinjia.png" alt="Robin Jia"></div><div><br><a href="http://stanford.edu/~robinjia/">Robin Jia</a></div></div>
+              </td>
+            </tr>
+          </tbody></table>
+        </div>
+    </div>
+  </div>
+
+<div class="section">
+  <b>Course assistants:</b>
+  </div>
+  <div class="cas">
+      <table>
+        <tbody><tr>
+          <td>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/amita_kamath.jpg" alt="Amita Kamath"></div><div><br>Amita Kamath (Head CA)</div></div>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/annazhu.jpg" alt="Anna Zhu"></div><div><br>Anna Zhu</div></div>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/nicholas.png" alt="Nicholas Barbier"></div><div><br>Nicholas Barbier</div></div>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/niranjan.jpg" alt="Niranjan Balachandar"></div><div><br>Niranjan Balachandar</div></div>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/rdm.jpg" alt="Richard Diehl Martinez"></div><div><br>Richard Diehl Martinez</div></div>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/zhenqin.JPG" alt="Zhen Qin"></div><div><br>Zhen Qin</div></div>
+      	    <div class="photos"><div><img src="http://web.stanford.edu/class/cs221/photos/handrew.jpg" alt="Andrew Han"></div><div><br>Andrew Han</div></div>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+  
+
+  <div class="section"><b>How to contact us:</b>
+    Please use <a href="https://piazza.com/class/jwwsru0q6x92gr">Piazza</a>
+    for all questions related to lectures, homeworks, and projects, and to
+    find announcements. For external queries, emergencies, or personal matters that you don't
+    wish to put in a private Piazza post, you can email us at <i>cs221-sum1819-staff@lists.stanford.edu</i>.
+    For SCPD-specific issues, email <i>scpdsupport@stanford.edu</i> or call 650-741-1542.
+  </div>
+
+  <div class="section"><b>Announcements:</b> All announcements will be made on <a href="https://piazza.com/class/jwwsru0q6x92gr">Piazza</a>. NOTE: If you enrolled in
+    this class on Axess, you should be added to the Piazza group automatically,
+    within a few hours. You can also register independently; there is no access code required to join the group.</div>
+
+  <div class="section"><b>Calendar</b>: look <a href="https://calendar.google.com/calendar/embed?src=q6h067cld3m6gnue0a1hu8go6k%40group.calendar.google.com&amp;ctz=America%2FLos_Angeles">here</a>
+    for dates/times of all lectures, sections, office hours, due dates.</div>
+
+  <!--
+  <div class="section"><b>Grades</b>: click <a href="restricted/grades.html">here</a> to check your grades and autograder feedback.</div>-->
+</div>
+
+<div class="section">
+  <a name="content"><span class="header">Content</span></a>
+
+  <div class="section"><b>What is this course about?</b>
+    What do web search, speech recognition, face recognition, machine translation,
+    autonomous driving, and automatic scheduling have in common?
+    These are all complex real-world problems,
+    and the goal of artificial intelligence (AI) is to tackle these
+    with rigorous mathematical tools.
+    In this course, you will learn the foundational principles that drive these
+    applications and practice implementing some of these systems.  Specific
+    topics include machine learning, search, game playing, Markov decision
+    processes, constraint satisfaction, graphical models, and logic.
+    The main goal of the course is to equip you with the tools to tackle new
+    AI problems you might encounter in life.
+  </div>
+
+  <div class="section"><b>Prerequisites:</b>
+    This course is fast-paced and covers a lot of ground,
+    so it is important that you have a solid foundation on both the theoretical and empirical fronts.
+    You should have taken the following classes (or their equivalents):
+    <ul>
+      <li>Programming (<a href="http://www.stanford.edu/class/cs106a/">CS 106A</a>, <a href="http://www.stanford.edu/class/cs106b/">CS 106B</a>, <a href="http://www.stanford.edu/class/cs107/">CS 107</a>)</li>
+      <li>Discrete math (<a href="http://www.stanford.edu/class/cs103/">CS 103</a>)</li>
+      <li>Probability (<a href="http://www.stanford.edu/class/cs109/">CS 109</a>)</li>
+    </ul>
+  </div>
+
+  <div class="section"><b>Reading:</b>
+    There is no required textbook for this class, and you should be able to
+    learn everything from the lecture notes and homeworks.
+    However, if you would like to pursue more advanced topics or get another
+    perspective on the same material, here are some books:
+    <ul>
+      <li><a href="http://aima.cs.berkeley.edu/">Russell and Norvig.  Artificial
+        Intelligence: A Modern Approach.</a> A comprehensive reference for
+      all the AI topics that we will cover.
+      </li>
+      <li>
+        <a href="http://mitpress.mit.edu/books/probabilistic-graphical-models">Koller and Friedman.  Probabilistic Graphical Models.</a>
+        Covers factor graphs and Bayesian networks (this is the textbook for CS228).</li>
+      <li>
+        <a href="https://mitpress.mit.edu/books/reinforcement-learning">Sutton and Barto.  Reinforcement Learning: An Introduction.</a>
+        Covers Markov decision processes and reinforcement learning.  Available free online.
+      </li>
+      <li>
+        <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Hastie, Tibshirani, and Friedman.  The elements of statistical learning.</a>
+        Covers machine learning.  Available free online.
+      </li>
+      <li>
+        <a href="http://www.bracil.net/edward/fcs.html">Tsang.  Foundations of constraint satisfaction.</a>
+        Covers constraint satisfaction problems.  Available free online.
+      </li>
+    </ul>
+    Bear in mind that some of these books can be quite dense and use different
+    notation terminology, so it might take some effort to connect up with the
+    material from class.
+
+    <p>Finally, to look at course content from the last offering (Spring 2019), click <a href="http://web.stanford.edu/class/cs221/spring2019">here</a>.
+  </p></div>
+
+  <div class="section"><b>A note on the Summer schedule:</b>
+    CS 221 is also offered during the Fall and Spring quarters, during which classes last ten weeks. In the Summer edition, we will cover the same material, but do so in only eight weeks (with more lecture time per week). Due to this compressed schedule, it is even more important that you have mastered the prerequisite material.
+  </div>
+
+</div>
+
+<div class="section">
+  <a name="officehours"><span class="header">Office Hour Logistics</span></a>
+  <div class="section">
+    <p>
+    CA office hours are either in Gates B21 (in the basement) or online.
+    See the <a href="https://calendar.google.com/calendar/embed?src=q6h067cld3m6gnue0a1hu8go6k%40group.calendar.google.com&amp;ctz=America%2FLos_Angeles">calendar</a> for times.
+    </p><ul>
+      <li>For in-person office hours, there will be a queue on the whiteboard where you can write your name down.
+      </li><li>For SCPD online office hours, you will need to register an account on <a href="http://queuestatus.com/">QueueStatus</a>.
+    When you wish to join the queue, click "Sign Up" at the <a href="http://queuestatus.com/queues/434">CS 221 queue</a>.
+    Be sure to enter your email when you "Sign Up"; this is a way for the CA to contact you. Look for announcements on the left panel for more information.
+    For online office hours, you will need to install Zoom to video call with the CA. See instructions below.
+    </li></ul>
+    <p></p>
+  </div>
+
+  <div class="section">
+    <p class="subheader">Installing Zoom</p>
+    <ul>
+    <li><b>Linux</b>:
+      <ul>
+      <li>Go to <a href="https://stanford.zoom.us/download?os=linux">downloads</a> and download appropriate Linux package from 'Zoom Client for Linux'.</li>
+      <li>Open package (e.g. with 'Ubuntu Software Center' or other appropriate application) and install.</li>
+      </ul>
+    </li>
+    <li><b>Windows</b>:
+      <ul>
+      <li>Go to <a href="https://uit.stanford.edu/service/zoom">Stanford Zoom</a> and click 'Launch Zoom'.</li>
+      <li>Click 'host meeting'; nothing will launch but there will a link to 'download &amp; run Zoom'.</li>
+      <li>Click on 'download &amp; run Zoom' to download 'Zoom_launcher.exe'.</li>
+      <li>Run 'Zoom_launcher.exe' to install.</li>
+      </ul>
+    </li>
+    </ul>
+  </div>
+
+</div>
+
+
+<div class="section">
+  <a name="coursework"><span class="header">Coursework</span></a>
+
+  <p class="subheader">Grading</p>
+  <ul>
+    <li><b>Homeworks</b> (70%):
+    There will be weekly homeworks with both written and programming parts.
+    Each homework is centered around an application and will also deepen your understanding of the theoretical concepts.
+    Some homeworks will have a competition component; winners will receive extra credit.
+    All assignments are due at <b><font color="red">3pm</font></b> on the due date (30 minutes before class).
+    Here are all the homework deadlines:
+    <p></p><div id="homeworks"><ul><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/foundations/index.html">Foundations [foundations]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/foundations.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/foundations/index.html">solutions</a>)</span> (due <strong>Tue Jul 2</strong>)</li><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/reconstruct/index.html">Text reconstruction [reconstruct]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/reconstruct.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/reconstruct/index.html">solutions</a>)</span> (due <strong>Tue Jul 9</strong>)</li><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/sentiment/index.html">Sentiment classification [sentiment]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/sentiment.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/sentiment/index.html">solutions</a>)</span> (due <strong>Tue Jul 16</strong>)</li><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/scheduling/index.html">Course scheduling [scheduling]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/scheduling.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/scheduling/index.html">solutions</a>)</span> (due <strong>Tue Jul 23</strong>)</li><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/blackjack/index.html">Blackjack [blackjack]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/blackjack.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/blackjack/index.html">solutions</a>)</span> (due <strong>Tue Jul 30</strong>)</li><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/car/index.html">car [car]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/car.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/car/index.html">solutions</a>)</span> (due <strong>Tue Aug 6</strong>)</li><li><span style="width:25em;display:inline-block"><a href="http://web.stanford.edu/class/cs221/assignments/pacman/index.html">Pac-Man [pacman]</a> (<a href="http://web.stanford.edu/class/cs221/assignments/pacman.zip">zip</a>) (<a href="http://web.stanford.edu/class/cs221/restricted/assignments/pacman/index.html">solutions</a>)</span> (due <strong>Tue Aug 13</strong>)</li></ul><br></div><p></p>
+    </li>
+
+    <li><b>Exam</b> (30%): The exam is a three-hour written exam that will
+    test your knowledge and problem-solving skills on all preceding lectures and homeworks.
+    You cannot use any external aids
+    except one double-sided page of notes.
+    If you have a request for OAE accommodations or a major conflict (e.g., an academic conference) complete <a href="https://forms.gle/xbhaiuxEA9rVk3CL8">this Google Form</a> by <strong>Thursday, July 18</strong>.
+
+    <div id="exam">
+      <blockquote>
+        Date: <strong>Friday, August 16</strong> from 7pm to 10pm<br>
+        Location: Cubberley Auditorium
+      </blockquote>
+
+      <ul>
+        <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-summer2019.pdf"><b>This class's exam</b></a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-summer2019-solution.pdf">solutions</a>]
+        </li>
+        <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2018.pdf">2018 exam</a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2018-solution.pdf">solutions</a>]
+        </li>
+	      <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2017.pdf">2017 exam</a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2017-solution.pdf">solutions</a>]
+        </li>
+        <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2016.pdf">2016 exam</a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2016-solution.pdf">solutions</a>]
+        </li>
+        <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2015.pdf">2015 exam</a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2015-solution.pdf">solutions</a>]
+        </li>
+        <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2014.pdf">2014 exam</a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2014-solution.pdf">solutions</a>]
+        </li>
+        <li>
+          <a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2013.pdf">2013 exam</a>
+          [<a href="http://web.stanford.edu/class/cs221/restricted/exams/exam-2013-solution.pdf">solutions</a>]
+        </li>
+      </ul>
+    </div>
+    <br>
+    For SCPD students, your exams will be distributed through the SCPD office once you have set up an exam monitor.
+    <br><br>
+
+    </li>
+
+    <li><b>Piazza</b>:
+    You will be awarded with up to 2% extra credit
+    if you answer other students' questions in a substantial and helpful way.
+  </li></ul>
+
+  <p class="subheader">Assignments</p>
+
+  <div class="section"><b>Written assignments:</b>
+    Homeworks should be written up clearly and succinctly; you may lose points if your answers
+    are unclear or unnecessarily complicated.
+    Here is an <a href="http://web.stanford.edu/class/cs221/homework-example.html">example</a> of what we are looking for.
+    You are encouraged to use LaTeX to writeup your homeworks
+    (here's a <a href="http://web.stanford.edu/class/cs221/homework.tex">template</a>), but this is not a requirement.
+  </div>
+
+  <div class="section"><b>Programming assignments:</b>
+    The grader runs on Python 2.7, which is not guaranteed to work with newer versions (Python 3) or older versions (below 2.7).
+    Please use <a href="https://www.python.org/downloads/">Python 2.7</a> to develop your code.
+    <p>
+    The programming assignments are designed to be run
+    in <b>GNU/Linux</b> environments, such
+    as <strong><a href="https://uit.stanford.edu/service/sharedcomputing/environments">cardinal.stanford.edu</a></strong>.
+    Most or all of the grading code may incidentally work on other
+    systems such as MacOS or Windows, and students may optionally
+    choose to do most of their development in one of these alternative
+    environments. However, no technical support will be provided for
+    issues that only arise on an alternative environment.  Moreover,
+    no matter what environment is used during development, students
+    must confirm that their code (specifically, the original <code>grader.py</code> script
+    operating on the student's <code>submission.py</code>) runs on a GNU/Linux server,
+    such as <code>cardinal.stanford.edu</code>.
+
+    </p><p>
+    The submitted code will <b>not</b> be graded if it has one of the following issues:
+    </p><ul>
+      <li>The original <code>grader.py</code> script (operating on the
+          submitted <code>submission.py</code>) does not <b>exit normally</b>.
+          Note that calls such as <code>quit()</code>, <code>exit()</code>,
+        <code>sys.exit()</code>, <code>os._exit()</code> may cause the program to exit <b>abnormally</b>, as may excessive resource usage.
+	Also note that Python packages outside the standard library are not guaranteed to work.</li>
+      <li>The code reads external resources other than the files given in the assignment.
+      </li><li>The code is malicious. This is considered a violation of the honor code.
+          The score of the assignment will be zero (0) and the incident will be reported to the Office of Judicial Affairs.
+    </li></ul>
+  </div>
+
+  <div class="section"><b>Collaboration policy and honor code:</b>
+    You are free to form study groups and discuss homeworks and projects.
+    However, you must write up homeworks and code from scratch independently, and you must acknowledge in your submission all the students you discussed with.
+    The following are considered to be honor code violations:
+    <ul>
+      <li>Looking at the writeup or code of another student.</li>
+      <li>Showing your writeup or code to another student.</li>
+      <li>Discussing homework problems in such detail that your solution (writeup or code) is almost identical to another student's answer.</li>
+      <li>Uploading your writeup or code to a public repository (e.g. github, bitbucket, pastebin) so that it can be accessed by other students.</li>
+      <li>Looking at solutions from previous years' homeworks - either official or written up by another student.</li>
+    </ul>
+    When debugging code together, you are only allowed to look at the input-output behavior
+    of each other's programs (so you should write good test cases!).
+    It is important to remember that even if you didn't copy but just gave
+    another student your solution, you are still violating the honor code, so please be careful.
+    We periodically run similarity-detection software over all
+    submitted student programs, including programs from past quarters and any
+    solutions found online on public websites.
+    Anyone violating the <a href="https://communitystandards.stanford.edu/student-conduct-process/honor-code-and-fundamental-standard">honor
+      code</a> will be referred to the Office of Judicial Affairs.
+    If you feel like you made a mistake (it can happen, especially under time
+    pressure!), please reach out to Robin or the head CA;
+    the consequences will be much less severe than if we approach you.
+  </div>
+
+  <p class="subheader">Submission</p>
+
+  <div class="section"><b>Electronic Submission:</b>
+    All assignments are due at <b><font color="red">3pm</font></b> on the due date.
+    Assignments are submitted through <a href="https://www.gradescope.com/courses/52612">Gradescope</a>.
+    If you need to sign up for a Gradescope account, please use your @stanford.edu email address.
+    You can submit as many times as you'd like until the deadline: we will only grade the last submission.
+    <b>Submit early to make sure your submission runs properly on the Gradescope servers.</b>
+    If anything goes wrong, please ask a question on Piazza or contact a course assistant.
+    Do not email us your submission.
+    <b>Partial work is better than not submitting any work.</b>
+    <p>
+    For assignments with a programming component, we will automatically
+    sanity check your code in some basic test cases, but we will grade
+    your code on additional test cases.
+    <b>Important</b>: just because you pass the basic test cases, you are by no
+    means guaranteed to get full credit on the other, hidden test cases, so you should
+    test the program more thoroughly yourself!
+    </p><p>
+    Unless the assignment instructs otherwise, all of your code modifications
+    should be in <code>submission.py</code> and all of your written answers
+    in <code>&lt;assignment ID&gt;.pdf</code>. Upload the former to Gradescope 
+    under the "Programming" section, and the latter under the "Written" section.
+  </p></div>
+
+  <div class="section"><b>Late days:</b>
+    An assignment is <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-1" style="width: 1.826em; display: inline-block;"><span style="display: inline-block; position: relative; width: 1.513em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.617em, 1001.3em, 2.867em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-2"><span class="mo" id="MathJax-Span-3" style="font-family: STIXGeneral-Regular;">⌈</span><span class="mi" id="MathJax-Span-4" style="font-family: STIXGeneral-Italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.055em;"></span></span><span class="mo" id="MathJax-Span-5" style="font-family: STIXGeneral-Regular;">⌉</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.309em; border-left: 0px solid; width: 0px; height: 1.253em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-1">\lceil d \rceil</script> days late if it is turned in <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-2-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-6" style="width: 0.732em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.576em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1000.58em, 2.659em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-7"><span class="mi" id="MathJax-Span-8" style="font-family: STIXGeneral-Italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.055em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.941em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-2">d</script> fractional days late
+    (note that this means if you are <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-3-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-9" style="width: 0.628em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.523em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1000.42em, 2.659em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-10"><span class="mn" id="MathJax-Span-11" style="font-family: STIXGeneral-Regular;">1</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.941em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-3">1</script> second late, <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-4-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-12" style="width: 10.419em; display: inline-block;"><span style="display: inline-block; position: relative; width: 8.648em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1008.6em, 2.815em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-13"><span class="mi" id="MathJax-Span-14" style="font-family: STIXGeneral-Italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.055em;"></span></span><span class="mo" id="MathJax-Span-15" style="font-family: STIXGeneral-Regular; padding-left: 0.315em;">=</span><span class="mn" id="MathJax-Span-16" style="font-family: STIXGeneral-Regular; padding-left: 0.315em;">1</span><span class="texatom" id="MathJax-Span-17"><span class="mrow" id="MathJax-Span-18"><span class="mo" id="MathJax-Span-19" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mo" id="MathJax-Span-20" style="font-family: STIXGeneral-Regular;">(</span><span class="mn" id="MathJax-Span-21" style="font-family: STIXGeneral-Regular;">24</span><span class="mo" id="MathJax-Span-22" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">×</span><span class="mn" id="MathJax-Span-23" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">60</span><span class="mo" id="MathJax-Span-24" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">×</span><span class="mn" id="MathJax-Span-25" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">60</span><span class="mo" id="MathJax-Span-26" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.191em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-4">d = 1/(24 \times 60 \times 60)</script> and it is 1 day late).
+    You have <b>seven (7) late days</b>
+    in total that can be distributed among the assignments without penalty.
+    There is a maximum of <b>two (2) late days</b> that can be used per assignment.
+    If you exceed this limit by <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-5-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-27" style="width: 0.576em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.471em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1000.47em, 2.659em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-28"><span class="mi" id="MathJax-Span-29" style="font-family: STIXGeneral-Italic;">k<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.941em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-5">k</script> hours,
+    then you will incur a multiplicative penalty factor of <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-6-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-30" style="width: 7.607em; display: inline-block;"><span style="display: inline-block; position: relative; width: 6.305em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1006.25em, 2.815em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-31"><span class="mo" id="MathJax-Span-32" style="font-family: STIXGeneral-Regular;">max</span><span class="mo" id="MathJax-Span-33" style="font-family: STIXGeneral-Regular;">(</span><span class="mn" id="MathJax-Span-34" style="font-family: STIXGeneral-Regular;">1</span><span class="mo" id="MathJax-Span-35" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">−</span><span class="mi" id="MathJax-Span-36" style="font-family: STIXGeneral-Italic; padding-left: 0.263em;">k<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="texatom" id="MathJax-Span-37"><span class="mrow" id="MathJax-Span-38"><span class="mo" id="MathJax-Span-39" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-40" style="font-family: STIXGeneral-Regular;">5</span><span class="mo" id="MathJax-Span-41" style="font-family: STIXGeneral-Regular;">,</span><span class="mn" id="MathJax-Span-42" style="font-family: STIXGeneral-Regular; padding-left: 0.211em;">0</span><span class="mo" id="MathJax-Span-43" style="font-family: STIXGeneral-Regular;">)</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.191em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-6">\max(1 - k/5, 0)</script>.
+    For example, if you get <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-7-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-44" style="width: 1.201em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.992em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1000.99em, 2.659em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-45"><span class="mn" id="MathJax-Span-46" style="font-family: STIXGeneral-Regular;">40</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.941em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-7">40</script> points and turn in your homework 2 days + 1.5 hours after the deadline,
+    then your effective score is <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-8-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-47" style="width: 9.273em; display: inline-block;"><span style="display: inline-block; position: relative; width: 7.711em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1007.66em, 2.815em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-48"><span class="mn" id="MathJax-Span-49" style="font-family: STIXGeneral-Regular;">40</span><span class="mo" id="MathJax-Span-50" style="font-family: STIXGeneral-Regular;">(</span><span class="mn" id="MathJax-Span-51" style="font-family: STIXGeneral-Regular;">1</span><span class="mo" id="MathJax-Span-52" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">−</span><span class="mn" id="MathJax-Span-53" style="font-family: STIXGeneral-Regular; padding-left: 0.263em;">1.5</span><span class="texatom" id="MathJax-Span-54"><span class="mrow" id="MathJax-Span-55"><span class="mo" id="MathJax-Span-56" style="font-family: STIXGeneral-Regular;">/</span></span></span><span class="mn" id="MathJax-Span-57" style="font-family: STIXGeneral-Regular;">5</span><span class="mo" id="MathJax-Span-58" style="font-family: STIXGeneral-Regular;">)</span><span class="mo" id="MathJax-Span-59" style="font-family: STIXGeneral-Regular; padding-left: 0.315em;">=</span><span class="mn" id="MathJax-Span-60" style="font-family: STIXGeneral-Regular; padding-left: 0.315em;">28</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.247em; border-left: 0px solid; width: 0px; height: 1.191em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-8">40(1 - 1.5/5) = 28</script>.
+    If you exceed <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-9-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-61" style="width: 0.628em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.523em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1000.47em, 2.659em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-62"><span class="mn" id="MathJax-Span-63" style="font-family: STIXGeneral-Regular;">5</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.941em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-9">5</script> hours, you will receive <span class="MathJax_Preview" style="display: none;"></span><span class="MathJax" id="MathJax-Element-10-Frame" tabindex="0" style=""><nobr><span class="math" id="MathJax-Span-64" style="width: 0.628em; display: inline-block;"><span style="display: inline-block; position: relative; width: 0.523em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.669em, 1000.52em, 2.659em, -999.997em); top: -2.497em; left: 0em;"><span class="mrow" id="MathJax-Span-65"><span class="mn" id="MathJax-Span-66" style="font-family: STIXGeneral-Regular;">0</span></span><span style="display: inline-block; width: 0px; height: 2.503em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.059em; border-left: 0px solid; width: 0px; height: 0.941em;"></span></span></nobr></span><script type="math/tex" id="MathJax-Element-10">0</script> points.
+    You get a zero after all your late days run out, but we reserve the right to give partial credit in extenuating circumstances.
+    <!--- <p>
+    While exceptions may be granted, if you use more than a total of eight (8) late days,
+    you will incur a multiplicative penalty factor of $\max(1 - 0.25n, 0)$ from the assignment grade
+    where $n$ is the number of late days for the assignment beyond the 8-day limit (loss of $25\%$ per day).
+    Late days are applied in chronological order (you do not get to choose which assignments to apply your late days).
+    Note that you can still use only up to two (2) late days per assignment.
+    Multiple multiplicative penalty factors interact multiplicatively.--->
+  </div>
+
+  <div class="section"><b>Regrades</b>: If you believe that the course
+    staff made an objective error in grading, then you may submit a
+    regrade request. Remember that even if the grading seems harsh to
+    you, the same rubric was used for everyone for fairness, so this
+    is not sufficient justification for a regrade.
+
+    It is also helpful to cross-check your answer against the released solutions.
+    If you still choose to submit a regrade request, click the corresponding
+    question on Gradescope, then click the "Request Regrade" button at the
+    bottom. 
+Any requests submitted over email or in person will be ignored.  Regrade requests for a
+particular assignment are due by Sunday 11:59pm, one week after the
+grades are returned. Note that we may regrade your entire submission,
+so that depending on your submission you may actually lose more points
+than you gain.
+  </div>
+
+</div>
+
+<div class="section">
+
+  <a name="schedule"><span class="header">Schedule</span></a>
+
+  <div class="section">
+    Each lecture will be divided into two roughly 50-minute halves covering different material, with a break in between.
+  </div>
+
+  <div id="schedule"><table><tbody><tr class="highlightOnHover"><td><b>Day</b></td><td><b>Topic 1</b></td><td><b>Topic 2</b></td><td><b>Slides 1</b></td><td><b>Slides 2</b></td><td><b>Events</b></td><td><b>Deadlines</b></td></tr><tr class="highlightOnHover"><td></td><td><div class="scheduledTopic">[Introduction]</div><div class="subtitle">What is this class about?</div></td><td><div class="scheduledTopic">[Search]</div><div class="subtitle">Problem solving as finding paths in graphs...</div></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Jun 25</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=overview.js" target="_blank">Overview of course</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search1.js" target="_blank">Tree search<br>Dynamic programming</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=overview.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=overview.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/overview.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/overview-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/search1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/search1-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/search1" class="pdfLink" target="_blank">[demo]</a></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/foundations/index.html">foundations</a> (<a href="http://web.stanford.edu/class/cs221/assignments/foundations.zip">zip</a>)] <b><font color="green">out</font></b></td><td></td></tr><tr class="highlightOnHover"><td></td><td><div class="scheduledTopic">[Machine learning]</div><div class="subtitle">Don't manually code it up, learn it from examples...</div></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Thu Jun 27</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning1.js" target="_blank">Linear classification<br>Loss minimization</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search2.js" target="_blank">Complex state spaces <br>Uniform cost search</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/learning1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/learning1-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/search2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/search2-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/search2" class="pdfLink" target="_blank">[demo]</a></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Jun 28</td><td>Basics: linear algebra, probability, python</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section1.pdf">slides</a>]</span></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Jul 2</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning2.js" target="_blank">Stochastic gradient descent<br>Alternatives to zero-one loss</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search3.js" target="_blank">A* Search<br>Learning costs</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/learning2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/learning2-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/learning2" class="pdfLink" target="_blank">[demo]</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=search3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/search3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/search3-6pp.pdf" target="_blank">6pp</a>]</span></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/reconstruct/index.html">reconstruct</a> (<a href="http://web.stanford.edu/class/cs221/assignments/reconstruct.zip">zip</a>)] <b><font color="green">out</font></b></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/foundations/index.html">foundations</a> (<a href="http://web.stanford.edu/class/cs221/assignments/foundations.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td>Thu Jul 4</td><td><b>(July 4 — no class)</b></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Jul 5</td><td></td><td>Section: UCS,Dynamic Programming, A*</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section2.pdf">slides</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td></td><td></td><td><div class="scheduledTopic">[Constraint satisfaction problems]</div><div class="subtitle">Problem solving as assigning variables with constraints...</div></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Mon Jul 8</td><td></td><td></td><td></td><td></td><td>Drop date</td><td></td></tr><tr class="highlightOnHover"><td>Tue Jul 9</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning3.js" target="_blank">Features<br>Generalization</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp1.js" target="_blank">Factor graphs<br>Backtracking search<br>Dynamic ordering</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/learning3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/learning3-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/csp1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/csp1-6pp.pdf" target="_blank">6pp</a>]</span></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/sentiment/index.html">sentiment</a> (<a href="http://web.stanford.edu/class/cs221/assignments/sentiment.zip">zip</a>)] <b><font color="green">out</font></b></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/reconstruct/index.html">reconstruct</a> (<a href="http://web.stanford.edu/class/cs221/assignments/reconstruct.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td>Thu Jul 11</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning4.js" target="_blank">Regularization<br>Unsupervised learning</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp2.js" target="_blank">Arc consistency<br>Beam search, local search</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning4.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning4.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/learning4.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/learning4-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/learning4" class="pdfLink" target="_blank">[demo]</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/csp2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/csp2-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=inference-demo.js" class="pdfLink" target="_blank">[demo]</a></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Jul 12</td><td>Section: Backpropagation and SciKit Learn</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section3.pdf">slides</a>]</span></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Jul 16</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning5.js" target="_blank">Neural networks<br>Nearest neighbors</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp3.js" target="_blank">Conditional independence, variable elimination</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning5.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=learning5.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/learning5.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/learning5-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=csp3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/csp3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/csp3-6pp.pdf" target="_blank">6pp</a>]</span></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/scheduling/index.html">scheduling</a> (<a href="http://web.stanford.edu/class/cs221/assignments/scheduling.zip">zip</a>)] <b><font color="green">out</font></b></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/sentiment/index.html">sentiment</a> (<a href="http://web.stanford.edu/class/cs221/assignments/sentiment.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td></td><td><div class="scheduledTopic">[Markov decision processes]</div><div class="subtitle">When nature intervenes randomly...</div></td><td><div class="scheduledTopic">[Bayesian networks]</div><div class="subtitle">Representing uncertainty with probabilities...</div></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Thu Jul 18</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp1.js" target="_blank">MDP basics<br>Policy evaluation</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes1.js" target="_blank">Bayesian inference<br>Probabilistic programs</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/mdp1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/mdp1-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/bayes1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/bayes1-6pp.pdf" target="_blank">6pp</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Jul 19</td><td></td><td>Section: CSPs</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section4.pdf">slides</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Jul 23</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp2.js" target="_blank">MDPs in code<br>Value iteration</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes2.js" target="_blank">Variable elimination<br>d-Separation<br>Hidden Markov models</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/mdp2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/mdp2-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/mdp2" class="pdfLink" target="_blank">[demo]</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/bayes2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/bayes2-6pp.pdf" target="_blank">6pp</a>]</span></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/blackjack/index.html">blackjack</a> (<a href="http://web.stanford.edu/class/cs221/assignments/blackjack.zip">zip</a>)] <b><font color="green">out</font></b></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/scheduling/index.html">scheduling</a> (<a href="http://web.stanford.edu/class/cs221/assignments/scheduling.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td>Thu Jul 25</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp3.js" target="_blank">Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes3.js" target="_blank">Gibbs sampling revisited<br>Particle filtering</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=mdp3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/mdp3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/mdp3-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/bayes3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/bayes3-6pp.pdf" target="_blank">6pp</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Jul 26</td><td>Section: deep reinforcement learning</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section5.pdf">slides</a>]</span></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td></td><td><div class="scheduledTopic">[Game playing]</div><div class="subtitle">When an adversary intervenes...</div></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Jul 30</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games1.js" target="_blank">Expectimax<br>Minimax</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes4.js" target="_blank">Learning Bayesian networks<br>Laplace smoothing</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/games1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/games1-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/games1" class="pdfLink" target="_blank">[demo]</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes4.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes4.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/bayes4.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/bayes4-6pp.pdf" target="_blank">6pp</a>]</span></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/car/index.html">car</a> (<a href="http://web.stanford.edu/class/cs221/assignments/car.zip">zip</a>)] <b><font color="green">out</font></b></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/blackjack/index.html">blackjack</a> (<a href="http://web.stanford.edu/class/cs221/assignments/blackjack.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td>Thu Aug 1</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games2.js" target="_blank">Evaluation functions<br>TD learning<br>Alpha-beta pruning</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes5.js" target="_blank">Expectation Maximization</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/games2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/games2-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes5.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=bayes5.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/bayes5.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/bayes5-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/bayes5" class="pdfLink" target="_blank">[demo]</a></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Aug 2</td><td></td><td>Section: Bayesian networks</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section6.pdf">slides</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td></td><td></td><td><div class="scheduledTopic">[Logic]</div><div class="subtitle">More expressive models...</div></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Aug 6</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games3.js" target="_blank">Simultaneous games<br>Game theory</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic1.js" target="_blank">Syntax versus semantics<br>Propositional logic</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=games3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/games3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/games3-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/logic1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/logic1-6pp.pdf" target="_blank">6pp</a>]</span></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/pacman/index.html">pacman</a> (<a href="http://web.stanford.edu/class/cs221/assignments/pacman.zip">zip</a>)] <b><font color="green">out</font></b></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/car/index.html">car</a> (<a href="http://web.stanford.edu/class/cs221/assignments/car.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td></td><td><div class="scheduledTopic">[Logic]</div><div class="subtitle">(continued)</div></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Thu Aug 8</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic2.js" target="_blank">Resolution<br>First-order logic</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic3.js" target="_blank">Semantic parsing</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/logic2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/logic2-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic3.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=logic3.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/logic3.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/logic3-6pp.pdf" target="_blank">6pp</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Aug 9</td><td></td><td>Section: Games, logic</td><td></td><td><span class="pdflink">[<a href="http://web.stanford.edu/class/cs221/sections/section7.pdf">slides</a>]</span></td><td></td><td></td></tr><tr class="highlightOnHover"><td></td><td><div class="scheduledTopic">[Conclusion]</div><div class="subtitle">Reflections and prospects...</div></td><td></td><td></td><td></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Tue Aug 13</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=deep.js" target="_blank">Deep learning<br>CNNs, RNNs</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=review.js" target="_blank">Exam Review</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=deep.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=deep.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/deep.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/deep-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=review.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=review.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/review.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/review-6pp.pdf" target="_blank">6pp</a>]</span></td><td></td><td>[<a href="http://web.stanford.edu/class/cs221/assignments/pacman/index.html">pacman</a> (<a href="http://web.stanford.edu/class/cs221/assignments/pacman.zip">zip</a>)] <b><font color="red">due</font></b></td></tr><tr class="highlightOnHover"><td>Thu Aug 15</td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=conclusion1.js" target="_blank">Algorithmic fairness<br>causality</a></td><td><a href="http://web.stanford.edu/class/cs221/lectures/index.html#include=conclusion2.js" target="_blank">Summary, future of AI</a></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=conclusion1.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=conclusion1.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/conclusion1.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/conclusion1-6pp.pdf" target="_blank">6pp</a>]</span></td><td><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=conclusion2.js&amp;mode=print1pp" target="_blank">[one page]</a><br><a class="pdfLink" href="http://web.stanford.edu/class/cs221/lectures/index.html#include=conclusion2.js&amp;mode=outline" target="_blank">[text outline]</a><br><span class="pdfLink">[pdf:<a href="http://web.stanford.edu/class/cs221/lectures/conclusion2.pdf" target="_blank">1pp</a>,<a href="http://web.stanford.edu/class/cs221/lectures/conclusion2-6pp.pdf" target="_blank">6pp</a>]</span><br><a href="http://web.stanford.edu/class/cs221/live/classes.html" class="pdfLink" target="_blank">[next classes]</a></td><td></td><td></td></tr><tr class="highlightOnHover"><td>Fri Aug 16</td><td></td><td></td><td></td><td></td><td><b><font color="brown">Final Exam</font></b></td><td></td></tr></tbody></table></div>
+</div>
+
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: STIXSizeOneSym, sans-serif;"></div></div></body></html>

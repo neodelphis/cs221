@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Library to do grading of Python programs.
 Usage (see grader.py):
