@@ -73,6 +73,9 @@ class BlackjackMDP(util.MDP):
     def actions(self, state):
         return ['Take', 'Peek', 'Quit']
 
+
+
+
     # Given a |state| and |action|, return a list of (newState, prob, reward) tuples
     # corresponding to the states reachable from |state| when taking |action|.
     # A few reminders:
@@ -82,8 +85,73 @@ class BlackjackMDP(util.MDP):
     # * When the probability is 0 for a transition to a particular new state,
     #   don't include that state in the list returned by succAndProbReward.
     def succAndProbReward(self, state, action):
-        # BEGIN_YOUR_CODE (our solution is 53 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+
+        # state:
+        # ( total_card_value_in_hand , next_card_index_if_peeked, deck_card_count )
+        # deck_card_count : liste dont l'index correspond à la valeur de la carte dans une liste card_values?
+        #                   et le nombre correspond au nb de cartes de ce type restantes dans la pioche
+        total_card_value_in_hand , next_card_index_if_peeked, deck_card_count = state
+
+        """
+        Renvoie une liste de (new_state, probability, reward) où
+        new_state   : s', état dans lequel on peut arriver
+        probability : T(s,a,s')
+        reward      : Reward(s,a,s')
+        """
+
+        # Les fonctions utiles
+        # Savoir si on se trouve dans un état final
+        def isEnd(state):
+            _ , _, deck_card_count = state
+            return deck_card_count == None
+
+        # Distribue une carte de la pioche
+        def next_card(deck_card_count):
+            # renvoie aléatoirement une carte représentée par son index
+            # Reconstruction du deck
+            deck = []
+            for index, card_count in enumerate(deck_card_count):
+                # index : hauteur de la carte
+                # card_count : nd de cartes de ce type restant dans le deck
+                deck += list((index,)*card_count)
+            return random.choice(deck_card_count)    
+
+        # Cas d'un état final
+        empy_list = []
+        if isEnd(state):
+            return empy_list
+
+        # On est forcé de quitter le jeu s'il n'y a plus de cartes dans la pioche
+        # s' : end
+        # T  : 1, pas de choix d'action
+        # R  : valeur des cartes en main
+        if deck_card_count == ((0,) * len(self.cardValues)):
+            end_state = (total_card_value_in_hand, None, None)
+            return [(end_state, 1, total_card_value_in_hand)]
+
+        # On quitte de son propre gré
+        if action == 'quit':
+            end_state = (total_card_value_in_hand, None, None)
+            return [(end_state, 1, total_card_value_in_hand)]
+
+        # Il reste des cartes dans la pioche et on n'a pas quitté
+        if action == 'Peek':
+            # On regarde dans la pioche la prochaine carte à venir
+            # index aléatoire dans `deck_card_count` pour les valeurs non nulles
+            next_card_index_if_peeked = next_card(deck_card_count)
+            new_state = (total_card_value_in_hand, next_card_index_if_peeked, deck_card_count)
+            return [(new_state, 1, total_card_value_in_hand)]
+            # ^
+            # |
+            #
+            # A Modifier car on veut une liste d'actions pas un cas particulier 
+
+        # On choisi de prendre une carte
+        # if action == 'Take':
+            # Cas next_card_index_if_peeked not None
+            # Value ou 0 si on a pris une carte trop haute
+
+
         # END_YOUR_CODE
 
     def discount(self):
