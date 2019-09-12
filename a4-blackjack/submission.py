@@ -101,21 +101,14 @@ class BlackjackMDP(util.MDP):
         total_card_value_in_hand , next_card_index_if_peeked, deck_card_count = state
 
         # Les fonctions utiles
-        # Savoir si on se trouve dans un état final
-        # def isEnd(state):
-        #     _ , _, deck_card_count = state
-        #     return deck_card_count == None
-
-        # # Montre une carte de la pioche
-        # def next_card(deck_card_count):
-        #     # renvoie aléatoirement une carte représentée par son index
-        #     # Reconstruction du deck
-        #     deck = []
-        #     for index, card_count in enumerate(deck_card_count):
-        #         # index : hauteur de la carte
-        #         # card_count : nd de cartes de ce type restant dans le deck
-        #         deck += list((index,)*card_count)
-        #     return random.choice(deck_card_count)   
+        def remove_card(deck_card_count, index):
+            """
+            Renvoie une nouvelle pioche avec une carte à index en moins
+            """
+            list_card_count = list(deck_card_count)
+            list_card_count[index] -= 1
+            new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+            return new_deck_card_count
 
         # --- Corps principal de la fonction succAndProbReward --- #
         # Cas d'un état final
@@ -177,8 +170,6 @@ class BlackjackMDP(util.MDP):
                 # 2- Elle n'est pas trop haute et on peut continuer le jeu 
                 #    sauf s'il ne reste plus de cartes dans la pioche
 
-                # number_of_cards = sum(deck_card_count)
-
                 # Liste des états atteignables
                 for index, card_count in enumerate(deck_card_count):
                     # Les cartes doivent être présentes dans la pioche
@@ -194,9 +185,7 @@ class BlackjackMDP(util.MDP):
                         # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
                         else:
                             # On supprime une carte dans `deck_card_count`
-                            list_card_count = list(deck_card_count)
-                            list_card_count[index] -= 1
-                            new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+                            new_deck_card_count = remove_card(deck_card_count, index)
 
                             # Prise en compte du cas où l'on vide la pioche
                             if sum(new_deck_card_count) == 0:
@@ -214,23 +203,21 @@ class BlackjackMDP(util.MDP):
 
             # Cas où l'on a regardé une carte le tour précédent
             else:  # next_card_index_if_peeked != None
-                # number_of_cards = sum(deck_card_count)
                 new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[next_card_index_if_peeked]
 
-                # 1- On pioche une carte trop haute - Bon un peu bête dans ce cas, mais bon on sais jamais
+                # 1- On pioche une carte trop haute - Bon un peu bête dans ce cas, mais bon on sait jamais
                 if new_total_card_value_in_hand > self.threshold:
                     new_state = ( new_total_card_value_in_hand , None, None )
                     probability = 1
                     reward = 0
                     results.append((new_state, probability, reward))
+
                 # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
                 else :
                     probability = 1
-                    list_card_count = list(deck_card_count)
-                    list_card_count[next_card_index_if_peeked] -= 1
-                    new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
-
+                    new_deck_card_count = remove_card(deck_card_count, next_card_index_if_peeked)
                     reward = 0
+
                     # Prise en compte du cas où l'on vide la pioche
                     if sum(new_deck_card_count) == 0:
                         # La récompense devient la main en cours et fin
@@ -257,9 +244,12 @@ def peekingMDP():
     Return an instance of BlackjackMDP where peeking is the
     optimal action at least 10% of the time.
     """
-    # BEGIN_YOUR_CODE (our solution is 2 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
-    # END_YOUR_CODE
+    threshold = 20
+    peekCost = 1
+    cardValues = [9, 11]
+    multiplicity = 2
+    return BlackjackMDP(cardValues, multiplicity, threshold, peekCost)
+
 
 ############################################################
 # Problem 4a: Q learning
