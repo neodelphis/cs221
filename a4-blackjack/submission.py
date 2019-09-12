@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-
+from __future__ import division # Force les divisions d'entiers à être des rééls
 import util, math, random
 from collections import defaultdict
 from util import ValueIteration
@@ -64,6 +64,7 @@ class BlackjackMDP(util.MDP):
     #   -- The third element is a tuple giving counts for each of the cards remaining
     #      in the deck, or None if the deck is empty or the game is over (e.g. when
     #      the user quits or goes bust).
+    #      Ca aurait pê été mieux d'utiliser une liste...
     def startState(self):
         return (0, None, (self.multiplicity,) * len(self.cardValues))
 
@@ -85,19 +86,19 @@ class BlackjackMDP(util.MDP):
     # * When the probability is 0 for a transition to a particular new state,
     #   don't include that state in the list returned by succAndProbReward.
     def succAndProbReward(self, state, action):
-
-        # state:
-        # ( total_card_value_in_hand , next_card_index_if_peeked, deck_card_count )
-        # deck_card_count : liste dont l'index correspond à la valeur de la carte dans une liste card_values?
-        #                   et le nombre correspond au nb de cartes de ce type restantes dans la pioche
-        total_card_value_in_hand , next_card_index_if_peeked, deck_card_count = state
-
         """
-        Renvoie une liste de (new_state, probability, reward) où
+        Renvoie une liste `results` de (new_state, probability, reward) où
         new_state   : s', état dans lequel on peut arriver
         probability : T(s,a,s')
         reward      : Reward(s,a,s')
         """
+        results = []
+
+        # state:
+        # ( total_card_value_in_hand , next_card_index_if_peeked, deck_card_count )
+        # deck_card_count : liste dont l'index correspond à la valeur de la carte dans une liste card_values
+        #                   et le nombre correspond au nb de cartes de ce type restantes dans la pioche
+        total_card_value_in_hand , next_card_index_if_peeked, deck_card_count = state
 
         # Les fonctions utiles
         # Savoir si on se trouve dans un état final
@@ -105,7 +106,7 @@ class BlackjackMDP(util.MDP):
             _ , _, deck_card_count = state
             return deck_card_count == None
 
-        # Distribue une carte de la pioche
+        # Montre une carte de la pioche
         def next_card(deck_card_count):
             # renvoie aléatoirement une carte représentée par son index
             # Reconstruction du deck
@@ -114,8 +115,9 @@ class BlackjackMDP(util.MDP):
                 # index : hauteur de la carte
                 # card_count : nd de cartes de ce type restant dans le deck
                 deck += list((index,)*card_count)
-            return random.choice(deck_card_count)    
+            return random.choice(deck_card_count)   
 
+        # --- Corps principal de la fonction succAndProbReward --- #
         # Cas d'un état final
         empy_list = []
         if isEnd(state):
@@ -127,29 +129,136 @@ class BlackjackMDP(util.MDP):
         # R  : valeur des cartes en main
         if deck_card_count == ((0,) * len(self.cardValues)):
             end_state = (total_card_value_in_hand, None, None)
-            return [(end_state, 1, total_card_value_in_hand)]
+            probability = 1
+            reward = total_card_value_in_hand
+            results.append((end_state, probability, reward))
+            return results
 
         # On quitte de son propre gré
-        if action == 'quit':
+        if action == 'Quit':
             end_state = (total_card_value_in_hand, None, None)
-            return [(end_state, 1, total_card_value_in_hand)]
+            probability = 1
+            reward = total_card_value_in_hand
+            results.append((end_state, probability, reward))
+            return results
 
         # Il reste des cartes dans la pioche et on n'a pas quitté
+        # Construction de la liste des successeurs possibles
         if action == 'Peek':
-            # On regarde dans la pioche la prochaine carte à venir
-            # index aléatoire dans `deck_card_count` pour les valeurs non nulles
-            next_card_index_if_peeked = next_card(deck_card_count)
-            new_state = (total_card_value_in_hand, next_card_index_if_peeked, deck_card_count)
-            return [(new_state, 1, total_card_value_in_hand)]
-            # ^
-            # |
-            #
-            # A Modifier car on veut une liste d'actions pas un cas particulier 
+            # s' : même état avec `next_card_index_if_peeked` modifié
+            # T  : probablité de voir une carte de hauteur donnée
+            # R  : - peekCost
+
+            # Probabilité de voir apparaître une carte lorsqu'on en regarde une au hasard
+            number_of_cards = sum(deck_card_count)
+            peek_probability = tuple(card_count/number_of_cards for card_count in deck_card_count)
+
+            for index, probability in enumerate(peek_probability):
+                if probability != 0:
+                    # new_state : ( total_card_value_in_hand , next_card_index_if_peeked, deck_card_count )
+                    # probability
+                    # reward = - self.peekCost
+                    new_state = ( total_card_value_in_hand , index, deck_card_count )
+                    # probability récupéré directement dans l'enum
+                    reward = - self.peekCost
+                    results.append((new_state, probability, reward))
+
+            return results
+
 
         # On choisi de prendre une carte
-        # if action == 'Take':
-            # Cas next_card_index_if_peeked not None
-            # Value ou 0 si on a pris une carte trop haute
+        if action == 'Take':
+
+            # Cas où l'on n'a pas regardé de carte le tour précédent
+            if next_card_index_if_peeked == None:
+                # On pioche une carte
+                # deux cas de figure:
+                # 1- Elle est de valeur trop haute et la somme des cartes de notre main est supérieure au seuil
+                #    on a une récompense totale de 0 et on est dirigé vers un état final
+                # 2- Elle n'est pas trop haute et on a une probalité d'obtenir une nouvelle valeur de notre main
+                #    différente en fonction des cartes restantes dans la pioche
+                number_of_cards = sum(deck_card_count)
+
+                # 1- On pioche une carte trop haute
+
+                # Nombre de cartes trop hautes dans la pioche
+                number_of_bust_cards = sum( card_count for index, card_count in enumerate(deck_card_count)
+                                            if self.cardValues[index] > (self.threshold - total_card_value_in_hand) )
+                if number_of_bust_cards > 0:
+                    new_state = ( 0 , None, None )
+                    probability = number_of_bust_cards / number_of_cards
+                    reward = 0
+                    results.append((new_state, probability, reward))
+
+                # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                for index, card_count in enumerate(deck_card_count):
+                    if self.cardValues[index] <= (self.threshold - total_card_value_in_hand):
+                        # On estime la probabilité d'obtenir cardValues[index]
+                        # Seulement pour les cartes présentes dans la pioche
+                        if card_count > 0:
+                            probability = card_count / number_of_cards
+                            print('-'*80)
+                            print probability
+                            print('-'*80)
+                            list_card_count = list(deck_card_count)
+                            list_card_count[index] -= 1
+                            new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+                            new_state = ( total_card_value_in_hand + self.cardValues[index] ,
+                                          None,
+                                          new_deck_card_count )
+                            reward = 0
+                            results.append((new_state, probability, reward))
+
+            # Cas où l'on a regardé une carte le tour précédent
+            else:  # next_card_index_if_peeked != None
+                number_of_cards = sum(deck_card_count)
+
+                # 1- On pioche une carte trop haute - Bon un peu bête dans ce cas, mais bon on sais jamais
+                if self.cardValues[next_card_index_if_peeked] > (self.threshold - total_card_value_in_hand):
+                    new_state = ( 0 , None, None )
+                    probability = 1
+                    reward = 0
+                    results.append((new_state, probability, reward))
+                # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                else :
+                    probability = 1
+                    list_card_count = list(deck_card_count)
+                    list_card_count[next_card_index_if_peeked] -= 1
+                    new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+                    new_state = ( total_card_value_in_hand + self.cardValues[next_card_index_if_peeked] ,
+                                  None,
+                                  new_deck_card_count )
+                    reward = 0
+                    results.append((new_state, probability, reward))                
+
+                # Nombre de cartes trop hautes dans la pioche
+                # number_of_bust_cards = sum( card_count for index, card_count in enumerate(deck_card_count)
+                #                             if cardValues[index] > (threshold - total_card_value_in_hand) )
+                # if number_of_bust_cards > 0:
+                #     new_state = ( 0 , None, None )
+                #     probability = number_of_bust_cards / number_of_cards
+                #     reward = 0
+                #     results.append((new_state, probability, reward))
+
+                # # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                # for index, card_count in enumerate(deck_card_count):
+                #     if cardValues[index] <= (threshold - total_card_value_in_hand):
+                #         # On estime la probabilité d'obtenir cardValues[index]
+                #         # Seulement pour les cartes présentes dans la pioche
+                #         if card_count > 0:
+                #             probability = card_count / number_of_cards
+
+                #             list_card_count = list(deck_card_count)
+                #             list_card_count[index] -= 1
+                #             new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+                #             new_state = ( total_card_value_in_hand + cardValues[index] ,
+                #                           None,
+                #                           new_deck_card_count )
+                #             reward = 0
+                #             results.append((new_state, probability, reward))
+
+            # Dans tous les cas
+            return results
 
 
         # END_YOUR_CODE

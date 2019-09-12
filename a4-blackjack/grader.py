@@ -91,9 +91,14 @@ def test3a():
         ([((5, None, (2, 1)), 1, 0)], mdp3, (0, 1, (2, 2)), 'Take')
     ]
     for gold, mdp, state, action in tests:
+        print ('*'*80)
+        print '   gold: {}'.format(gold)
+        print '   state: {}, action: {}'.format(state, action)
         if not grader.requireIsEqual(gold,
                                      mdp.succAndProbReward(state, action)):
             print '   state: {}, action: {}'.format(state, action)
+        else:
+            print 'OK'
 grader.addBasicPart('3a-basic', test3a, 5, description="Basic test for succAndProbReward() that covers several edge cases.")
 
 def test3aHidden():
