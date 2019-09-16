@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-
+from __future__ import division # Force les divisions d'entiers à être des rééls
 import util, math, random
 from collections import defaultdict
 from util import ValueIteration
@@ -64,6 +64,7 @@ class BlackjackMDP(util.MDP):
     #   -- The third element is a tuple giving counts for each of the cards remaining
     #      in the deck, or None if the deck is empty or the game is over (e.g. when
     #      the user quits or goes bust).
+    #      Ca aurait pê été mieux d'utiliser une liste...
     def startState(self):
         return (0, None, (self.multiplicity,) * len(self.cardValues))
 
@@ -72,6 +73,7 @@ class BlackjackMDP(util.MDP):
     # All logic for dealing with end states should be placed into the succAndProbReward function below.
     def actions(self, state):
         return ['Take', 'Peek', 'Quit']
+
 
     # Given a |state| and |action|, return a list of (newState, prob, reward) tuples
     # corresponding to the states reachable from |state| when taking |action|.
@@ -82,8 +84,153 @@ class BlackjackMDP(util.MDP):
     # * When the probability is 0 for a transition to a particular new state,
     #   don't include that state in the list returned by succAndProbReward.
     def succAndProbReward(self, state, action):
-        # BEGIN_YOUR_CODE (our solution is 53 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+        """
+        Renvoie une liste `results` de (new_state, probability, reward) où
+        new_state   : s', état dans lequel on peut arriver
+        probability : T(s,a,s')
+        reward      : Reward(s,a,s')
+
+        state : ( total_card_value_in_hand ,
+                  next_card_index_if_peeked,
+                  deck_card_count )
+        deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values 
+                          et le nombre correspond au nb de cartes de ce type restantes dans la pioche 
+        """
+        results = []
+
+        total_card_value_in_hand , next_card_index_if_peeked, deck_card_count = state
+
+        # Les fonctions utiles
+        def remove_card(deck_card_count, index):
+            """
+            Renvoie une nouvelle pioche avec une carte à index en moins
+            """
+            list_card_count = list(deck_card_count)
+            list_card_count[index] -= 1
+            new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+            return new_deck_card_count
+
+        # --- Corps principal de la fonction succAndProbReward --- #
+        # Cas d'un état final
+        # empy_list = []
+        if deck_card_count == None:
+            return results  # Liste vide
+
+        # On est forcé de quitter le jeu s'il n'y a plus de cartes dans la pioche
+        # s' : end
+        # T  : 1, pas de choix d'action
+        # R  : valeur des cartes en main
+        if sum(deck_card_count) == 0:
+            end_state = (total_card_value_in_hand, None, None)
+            probability = 1
+            reward = total_card_value_in_hand
+            results.append((end_state, probability, reward))
+            return results
+
+        # On quitte de son propre gré
+        if action == 'Quit':
+            end_state = (total_card_value_in_hand, None, None)
+            probability = 1
+            reward = total_card_value_in_hand
+            results.append((end_state, probability, reward))
+            return results
+
+        # Il reste des cartes dans la pioche et on n'a pas quitté
+        # Construction de la liste des successeurs possibles
+        if action == 'Peek':
+            # s' : même état avec `next_card_index_if_peeked` modifié
+            # T  : probablité de voir une carte de hauteur donnée
+            # R  : - peekCost
+
+            # Probabilité de voir apparaître une carte lorsqu'on en regarde une au hasard
+            number_of_cards = sum(deck_card_count)
+            peek_probability = tuple(card_count/number_of_cards for card_count in deck_card_count)
+
+            # Liste des états atteignables
+            for index, probability in enumerate(peek_probability):
+                if probability != 0:
+                    new_state = ( total_card_value_in_hand , index, deck_card_count )
+                    # probability récupéré directement dans l'enum
+                    reward = - self.peekCost
+                    results.append((new_state, probability, reward))
+
+            return results
+
+
+        # On choisi de prendre une carte
+        if action == 'Take':
+            number_of_cards = sum(deck_card_count)
+
+            # Cas où l'on n'a pas regardé de carte le tour précédent
+            if next_card_index_if_peeked == None:
+                # On pioche une carte
+                # deux cas de figure:
+                # 1- Elle est de valeur trop haute et la somme des cartes de notre main est supérieure au seuil
+                #    on a une récompense totale de 0 et on est dirigé vers un état final
+                # 2- Elle n'est pas trop haute et on peut continuer le jeu 
+                #    sauf s'il ne reste plus de cartes dans la pioche
+
+                # Liste des états atteignables
+                for index, card_count in enumerate(deck_card_count):
+                    # Les cartes doivent être présentes dans la pioche
+                    if card_count > 0:
+                        new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[index]
+                        probability = card_count / number_of_cards
+                        reward = 0
+                        # 1- On pioche une carte trop haute
+                        if new_total_card_value_in_hand > self.threshold:
+                            new_state = ( new_total_card_value_in_hand ,
+                                          None,
+                                          None ) 
+                        # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                        else:
+                            # On supprime une carte dans `deck_card_count`
+                            new_deck_card_count = remove_card(deck_card_count, index)
+
+                            # Prise en compte du cas où l'on vide la pioche
+                            if sum(new_deck_card_count) == 0:
+                                # La récompense devient la main en cours et fin
+                                reward = new_total_card_value_in_hand
+                                new_deck_card_count = None
+                            
+                            # Dans tous les cas
+                            new_state = ( new_total_card_value_in_hand ,
+                                          None,
+                                          new_deck_card_count )
+                          
+                        
+                        results.append((new_state, probability, reward))
+
+            # Cas où l'on a regardé une carte le tour précédent
+            else:  # next_card_index_if_peeked != None
+                new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[next_card_index_if_peeked]
+
+                # 1- On pioche une carte trop haute - Bon un peu bête dans ce cas, mais bon on sait jamais
+                if new_total_card_value_in_hand > self.threshold:
+                    new_state = ( new_total_card_value_in_hand , None, None )
+                    probability = 1
+                    reward = 0
+                    results.append((new_state, probability, reward))
+
+                # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                else :
+                    probability = 1
+                    new_deck_card_count = remove_card(deck_card_count, next_card_index_if_peeked)
+                    reward = 0
+
+                    # Prise en compte du cas où l'on vide la pioche
+                    if sum(new_deck_card_count) == 0:
+                        # La récompense devient la main en cours et fin
+                        reward = new_total_card_value_in_hand
+                        new_deck_card_count = None
+
+                    new_state = ( new_total_card_value_in_hand , None, new_deck_card_count )
+                    results.append((new_state, probability, reward))                
+
+            # Dans tous les cas
+            return results
+
+
         # END_YOUR_CODE
 
     def discount(self):
@@ -97,9 +244,12 @@ def peekingMDP():
     Return an instance of BlackjackMDP where peeking is the
     optimal action at least 10% of the time.
     """
-    # BEGIN_YOUR_CODE (our solution is 2 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
-    # END_YOUR_CODE
+    threshold = 20
+    peekCost = 1
+    cardValues = [9, 11]
+    multiplicity = 2
+    return BlackjackMDP(cardValues, multiplicity, threshold, peekCost)
+
 
 ############################################################
 # Problem 4a: Q learning
