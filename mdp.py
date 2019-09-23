@@ -66,15 +66,16 @@ class TransportationMDP:
 
 def value_iteration(mdp):
 	# On veut calculer une estimation de V_opt(state)
-	# V : state -> estimate of V_opt(state)
+	# Fonction V : state -> estimate of V_opt(state)
 	# Value V
 	V = {}
 
 	# Policy pi
-	# pi: state -> estimate of pi_opt(state)
+	# Fonction pi: state -> estimate of pi_opt(state)
 	pi = {}
 
 	# A partir de l'estimation courante de V
+	# new_state : s'
 	def Q(state, action):
 		return sum(
 				   probability * (reward + mdp.discount() * V[new_state])
