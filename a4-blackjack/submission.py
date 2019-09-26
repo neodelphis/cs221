@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*- 
-from __future__ import division # Force les divisions d'entiers à être des rééls
-import util, math, random
+# -*- coding: utf-8 -*-
+from __future__ import division  # Force les divisions d'entiers à être des rééls
+import util
+import math
+import random
 from collections import defaultdict
 from util import ValueIteration
 
 ############################################################
 # Problem 2a
+
 
 # If you decide 2a is true, prove it in blackjack.pdf and put "return None" for
 # the code blocks below.  If you decide that 2a is false, construct a counterexample.
@@ -18,8 +21,8 @@ class CounterexampleMDP(util.MDP):
     def actions(self, state):
         results = []
         if state is 'start':
-            results.append('chance') # Chance node
-            results.append('sure')   # Chance node with 100% prob
+            results.append('chance')  # Chance node
+            results.append('sure')    # Chance node with 100% prob
         return results
 
     # Given a |state| and |action|, return a list of (newState, prob, reward) tuples
@@ -40,6 +43,7 @@ class CounterexampleMDP(util.MDP):
 
 ############################################################
 # Problem 3a
+
 
 class BlackjackMDP(util.MDP):
     def __init__(self, cardValues, multiplicity, threshold, peekCost):
@@ -74,7 +78,6 @@ class BlackjackMDP(util.MDP):
     def actions(self, state):
         return ['Take', 'Peek', 'Quit']
 
-
     # Given a |state| and |action|, return a list of (newState, prob, reward) tuples
     # corresponding to the states reachable from |state| when taking |action|.
     # A few reminders:
@@ -93,12 +96,12 @@ class BlackjackMDP(util.MDP):
         state : ( total_card_value_in_hand ,
                   next_card_index_if_peeked,
                   deck_card_count )
-        deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values 
-                          et le nombre correspond au nb de cartes de ce type restantes dans la pioche 
+        deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values`
+                          et le nombre correspond au nb de cartes de ce type restantes dans la pioche
         """
         results = []
 
-        total_card_value_in_hand , next_card_index_if_peeked, deck_card_count = state
+        total_card_value_in_hand, next_card_index_if_peeked, deck_card_count = state
 
         # Les fonctions utiles
         def remove_card(deck_card_count, index):
@@ -107,13 +110,14 @@ class BlackjackMDP(util.MDP):
             """
             list_card_count = list(deck_card_count)
             list_card_count[index] -= 1
-            new_deck_card_count = tuple(list_card_count)  # Bof bof de travailler avec des tuples
+            # Bof bof de travailler avec des tuples
+            new_deck_card_count = tuple(list_card_count)
             return new_deck_card_count
 
         # --- Corps principal de la fonction succAndProbReward --- #
         # Cas d'un état final
         # empy_list = []
-        if deck_card_count == None:
+        if deck_card_count is None:
             return results  # Liste vide
 
         # On est forcé de quitter le jeu s'il n'y a plus de cartes dans la pioche
@@ -144,78 +148,82 @@ class BlackjackMDP(util.MDP):
 
             # Probabilité de voir apparaître une carte lorsqu'on en regarde une au hasard
             number_of_cards = sum(deck_card_count)
-            peek_probability = tuple(card_count/number_of_cards for card_count in deck_card_count)
+            peek_probability = tuple(
+                card_count / number_of_cards for card_count in deck_card_count)
 
             # Liste des états atteignables
             for index, probability in enumerate(peek_probability):
                 if probability != 0:
-                    new_state = ( total_card_value_in_hand , index, deck_card_count )
+                    new_state = (total_card_value_in_hand,
+                                 index, deck_card_count)
                     # probability récupéré directement dans l'enum
                     reward = - self.peekCost
                     results.append((new_state, probability, reward))
 
             return results
 
-
         # On choisi de prendre une carte
         if action == 'Take':
             number_of_cards = sum(deck_card_count)
 
             # Cas où l'on n'a pas regardé de carte le tour précédent
-            if next_card_index_if_peeked == None:
+            if next_card_index_if_peeked is None:
                 # On pioche une carte
                 # deux cas de figure:
                 # 1- Elle est de valeur trop haute et la somme des cartes de notre main est supérieure au seuil
                 #    on a une récompense totale de 0 et on est dirigé vers un état final
-                # 2- Elle n'est pas trop haute et on peut continuer le jeu 
+                # 2- Elle n'est pas trop haute et on peut continuer le jeu
                 #    sauf s'il ne reste plus de cartes dans la pioche
 
                 # Liste des états atteignables
                 for index, card_count in enumerate(deck_card_count):
                     # Les cartes doivent être présentes dans la pioche
                     if card_count > 0:
-                        new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[index]
+                        new_total_card_value_in_hand = total_card_value_in_hand + \
+                            self.cardValues[index]
                         probability = card_count / number_of_cards
                         reward = 0
                         # 1- On pioche une carte trop haute
                         if new_total_card_value_in_hand > self.threshold:
-                            new_state = ( new_total_card_value_in_hand ,
-                                          None,
-                                          None ) 
-                        # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                            new_state = (new_total_card_value_in_hand,
+                                         None,
+                                         None)
+                        # 2- On pioche une carte dont la valeur ne nous fait pas dépasser le seuil
                         else:
                             # On supprime une carte dans `deck_card_count`
-                            new_deck_card_count = remove_card(deck_card_count, index)
+                            new_deck_card_count = remove_card(
+                                deck_card_count, index)
 
                             # Prise en compte du cas où l'on vide la pioche
                             if sum(new_deck_card_count) == 0:
                                 # La récompense devient la main en cours et fin
                                 reward = new_total_card_value_in_hand
                                 new_deck_card_count = None
-                            
+
                             # Dans tous les cas
-                            new_state = ( new_total_card_value_in_hand ,
-                                          None,
-                                          new_deck_card_count )
-                          
-                        
+                            new_state = (new_total_card_value_in_hand,
+                                         None,
+                                         new_deck_card_count)
+
                         results.append((new_state, probability, reward))
 
             # Cas où l'on a regardé une carte le tour précédent
             else:  # next_card_index_if_peeked != None
-                new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[next_card_index_if_peeked]
+                new_total_card_value_in_hand = total_card_value_in_hand + \
+                    self.cardValues[next_card_index_if_peeked]
 
                 # 1- On pioche une carte trop haute - Bon un peu bête dans ce cas, mais bon on sait jamais
                 if new_total_card_value_in_hand > self.threshold:
-                    new_state = ( new_total_card_value_in_hand , None, None )
+                    new_state = (new_total_card_value_in_hand, None, None)
                     probability = 1
                     reward = 0
                     results.append((new_state, probability, reward))
 
                 # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
-                else :
+                else:
                     probability = 1
-                    new_deck_card_count = remove_card(deck_card_count, next_card_index_if_peeked)
+                    new_deck_card_count = remove_card(
+                        deck_card_count, next_card_index_if_peeked)
                     reward = 0
 
                     # Prise en compte du cas où l'on vide la pioche
@@ -224,12 +232,12 @@ class BlackjackMDP(util.MDP):
                         reward = new_total_card_value_in_hand
                         new_deck_card_count = None
 
-                    new_state = ( new_total_card_value_in_hand , None, new_deck_card_count )
-                    results.append((new_state, probability, reward))                
+                    new_state = (new_total_card_value_in_hand,
+                                 None, new_deck_card_count)
+                    results.append((new_state, probability, reward))
 
             # Dans tous les cas
             return results
-
 
         # END_YOUR_CODE
 
@@ -238,6 +246,7 @@ class BlackjackMDP(util.MDP):
 
 ############################################################
 # Problem 3b
+
 
 def peekingMDP():
     """
@@ -296,8 +305,23 @@ class QLearningAlgorithm(util.RLAlgorithm):
     # self.getQ() to compute the current estimate of the parameters.
     def incorporateFeedback(self, state, action, reward, newState):
         # BEGIN_YOUR_CODE (our solution is 12 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+
+        eta = self.getStepSize()
+
+        prediction = self.getQ(state, action)
+
+        if newState is None:
+            V_opt = 0
+        else:
+            # Le max est fait dans la fonction getAction
+            V_opt = self.getQ(newState, self.getAction(newState))
+        target = reward + self.discount * V_opt
+
+        for featureKey, featureValue in self.featureExtractor(state, action):
+            self.weights[featureKey] = self.weights[featureKey] - eta * (prediction - target) * featureValue
+
         # END_YOUR_CODE
+
 
 # Return a single-element list containing a binary (indicator) feature
 # for the existence of the (state, action) pair.  Provides no generalization.
@@ -308,11 +332,16 @@ def identityFeatureExtractor(state, action):
 
 ############################################################
 # Problem 4b: convergence of Q-learning
+
+
 # Small test case
-smallMDP = BlackjackMDP(cardValues=[1, 5], multiplicity=2, threshold=10, peekCost=1)
+smallMDP = BlackjackMDP(
+    cardValues=[1, 5], multiplicity=2, threshold=10, peekCost=1)
 
 # Large test case
-largeMDP = BlackjackMDP(cardValues=[1, 3, 5, 8, 10], multiplicity=3, threshold=40, peekCost=1)
+largeMDP = BlackjackMDP(
+    cardValues=[1, 3, 5, 8, 10], multiplicity=3, threshold=40, peekCost=1)
+
 
 def simulate_QL_over_MDP(mdp, featureExtractor):
     # NOTE: adding more code to this function is totally optional, but it will probably be useful
@@ -320,22 +349,28 @@ def simulate_QL_over_MDP(mdp, featureExtractor):
     # that you add a few lines of code here to run value iteration, simulate Q-learning on the MDP,
     # and then print some stats comparing the policies learned by these two approaches.
     # BEGIN_YOUR_CODE
-    pass
+    print ("simulate_QL_over_MDP")
+    # rl = submission.QLearningAlgorithm(mdp.actions, mdp.discount(),
+    #                                    submission.identityFeatureExtractor,
+    #                                    0.2)
+    # util.simulate(mdp, rl, 30000)
+
     # END_YOUR_CODE
 
+    ############################################################
+    # Problem 4c: features for Q-learning.
 
-############################################################
-# Problem 4c: features for Q-learning.
+    # You should return a list of (feature key, feature value) pairs.
+    # (See identityFeatureExtractor() above for a simple example.)
+    # Include the following features in the list you return:
+    # -- Indicator for the action and the current total (1 feature).
+    # -- Indicator for the action and the presence/absence of each face value in the deck.
+    #       Example: if the deck is (3, 4, 0, 2), then your indicator on the presence of each card is (1, 1, 0, 1)
+    #       Note: only add this feature if the deck is not None.
+    # -- Indicators for the action and the number of cards remaining with each face value (len(counts) features).
+    #       Note: only add these features if the deck is not None.
 
-# You should return a list of (feature key, feature value) pairs.
-# (See identityFeatureExtractor() above for a simple example.)
-# Include the following features in the list you return:
-# -- Indicator for the action and the current total (1 feature).
-# -- Indicator for the action and the presence/absence of each face value in the deck.
-#       Example: if the deck is (3, 4, 0, 2), then your indicator on the presence of each card is (1, 1, 0, 1)
-#       Note: only add this feature if the deck is not None.
-# -- Indicators for the action and the number of cards remaining with each face value (len(counts) features).
-#       Note: only add these features if the deck is not None.
+
 def blackjackFeatureExtractor(state, action):
     total, nextCard, counts = state
 
@@ -343,14 +378,19 @@ def blackjackFeatureExtractor(state, action):
     raise Exception("Not implemented yet")
     # END_YOUR_CODE
 
+
 ############################################################
 # Problem 4d: What happens when the MDP changes underneath you?!
 
+
 # Original mdp
-originalMDP = BlackjackMDP(cardValues=[1, 5], multiplicity=2, threshold=10, peekCost=1)
+originalMDP = BlackjackMDP(
+    cardValues=[1, 5], multiplicity=2, threshold=10, peekCost=1)
 
 # New threshold
-newThresholdMDP = BlackjackMDP(cardValues=[1, 5], multiplicity=2, threshold=15, peekCost=1)
+newThresholdMDP = BlackjackMDP(
+    cardValues=[1, 5], multiplicity=2, threshold=15, peekCost=1)
+
 
 def compare_changed_MDP(original_mdp, modified_mdp, featureExtractor):
     # NOTE: as in 4b above, adding more code to this function is completely optional, but we've added
@@ -360,4 +400,3 @@ def compare_changed_MDP(original_mdp, modified_mdp, featureExtractor):
     # BEGIN_YOUR_CODE
     pass
     # END_YOUR_CODE
-
