@@ -217,13 +217,15 @@ grader.addManualPart(
 
 
 def run4bHelper():
-    submission.simulate_QL_over_MDP(
-        submission.smallMDP, submission.identityFeatureExtractor)
-    submission.simulate_QL_over_MDP(
-        submission.largeMDP, submission.identityFeatureExtractor)
+    submission.simulate_QL_over_MDP(submission.smallMDP, submission.identityFeatureExtractor,
+                                    verbose=False)
+    submission.simulate_QL_over_MDP(submission.largeMDP, submission.identityFeatureExtractor,
+                                    verbose=False)
+    print('RL peut performant, mais la fonction choisie Phi est particulièrement peu généralisable \
+    (fonction indicatrice de (s,a))')
 
 
-grader.addBasicPart('4b-helper', run4bHelper, 0, maxSeconds=60,
+grader.addBasicPart('4b-helper', run4bHelper, 0, maxSeconds=3600,
                     description="Helper function to run Q-learning simulations for question 4b.")
 
 
@@ -259,7 +261,7 @@ def run4dHelper():
         submission.originalMDP, submission.newThresholdMDP, submission.blackjackFeatureExtractor)
 
 
-grader.addBasicPart('4d-helper', run4dHelper, 0, maxSeconds=60,
+grader.addBasicPart('4d-helper', run4dHelper, 0, maxSeconds=3600,
                     description="Helper function to compare rewards when simulating RL over two different MDPs in question 4d.")
 
 grader.grade()

@@ -3,6 +3,7 @@ from __future__ import division  # Force les divisions d'entiers à être des r�
 import util
 import math
 import random
+import pprint
 from collections import defaultdict
 from util import ValueIteration
 
@@ -58,6 +59,9 @@ class BlackjackMDP(util.MDP):
         self.threshold = threshold
         self.peekCost = peekCost
 
+    # state : ( total_card_value_in_hand ,
+    #           next_card_index_if_peeked,
+    #           deck_card_count )
     # Return the start state.
     # Look closely at this function to see an example of state representation for our Blackjack game.
     # Each state is a tuple with 3 elements:
@@ -179,8 +183,7 @@ class BlackjackMDP(util.MDP):
                 for index, card_count in enumerate(deck_card_count):
                     # Les cartes doivent être présentes dans la pioche
                     if card_count > 0:
-                        new_total_card_value_in_hand = total_card_value_in_hand + \
-                            self.cardValues[index]
+                        new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[index]
                         probability = card_count / number_of_cards
                         reward = 0
                         # 1- On pioche une carte trop haute
@@ -209,8 +212,7 @@ class BlackjackMDP(util.MDP):
 
             # Cas où l'on a regardé une carte le tour précédent
             else:  # next_card_index_if_peeked != None
-                new_total_card_value_in_hand = total_card_value_in_hand + \
-                    self.cardValues[next_card_index_if_peeked]
+                new_total_card_value_in_hand = total_card_value_in_hand + self.cardValues[next_card_index_if_peeked]
 
                 # 1- On pioche une carte trop haute - Bon un peu bête dans ce cas, mais bon on sait jamais
                 if new_total_card_value_in_hand > self.threshold:
@@ -282,7 +284,10 @@ class QLearningAlgorithm(util.RLAlgorithm):
     def getQ(self, state, action):
         score = 0
         for f, v in self.featureExtractor(state, action):
+            print 'f : ', f
+            print 'v : ', v
             score += self.weights[f] * v
+            print(score)
         return score
 
     # This algorithm will produce an action given a state.
@@ -322,9 +327,33 @@ class QLearningAlgorithm(util.RLAlgorithm):
 
         # END_YOUR_CODE
 
+    def get_pi_opt(self, state):
+        # Renvoie la stratégie optimale après une simulation à partir d'un état donné |state|
+        pi = {}
+        self.explorationProb = 0
+        states = []
+        for item in list(self.weights):
+            state, action = item
+            states.append(state)
+        states = set(states)
+        # print('RL', len(states))
+        for state in states:
+            pi[state] = self.getAction(state)
+        return pi
+
+        # pprint.pprint(sorted(list(self.weights)))  # Ensemble des états vus
+        # Toutes les actions "optimales" envisagées
+        # action = getAction(state)
+
+        # for state in states:
+        #     if mdp.actions(state):  # Ajout pour éviter le max d'une liste vide...
+        #         pi[state] = max((computeQ(mdp, V, state, action), action) for action in mdp.actions(state))[1]
+        # return pi
 
 # Return a single-element list containing a binary (indicator) feature
 # for the existence of the (state, action) pair.  Provides no generalization.
+
+
 def identityFeatureExtractor(state, action):
     featureKey = (state, action)
     featureValue = 1
@@ -343,13 +372,66 @@ largeMDP = BlackjackMDP(
     cardValues=[1, 3, 5, 8, 10], multiplicity=3, threshold=40, peekCost=1)
 
 
-def simulate_QL_over_MDP(mdp, featureExtractor):
+def simulate_QL_over_MDP(mdp, featureExtractor, verbose=False):
     # NOTE: adding more code to this function is totally optional, but it will probably be useful
     # to you as you work to answer question 4b (a written question on this assignment).  We suggest
     # that you add a few lines of code here to run value iteration, simulate Q-learning on the MDP,
     # and then print some stats comparing the policies learned by these two approaches.
     # BEGIN_YOUR_CODE
     print ("simulate_QL_over_MDP")
+    startState = mdp.startState()
+    alg = util.ValueIteration()
+    alg.solve(mdp, .0001)
+    pi_vi = alg.pi  # pi computed with value iteration
+    # print('pi : ')
+    # for key in sorted(list(alg.pi)):  # Liste des clés triées
+    #     print('{} : {}'.format(key, alg.pi[key]))
+    if verbose:
+        print('len pi_vi :  {}'.format(len(alg.pi)))
+
+    # print('V  : ')
+    # for key in sorted(list(alg.V)):  # Liste des clés triées
+    #     print('{} : {}'.format(key, alg.V[key]))
+
+    mdp.computeStates()
+    rl = QLearningAlgorithm(mdp.actions, mdp.discount(),
+                            identityFeatureExtractor,
+                            0.2)
+    util.simulate(mdp, rl, 30000)
+    state = mdp.startState()
+
+    pi_rl = rl.get_pi_opt(state)  # pi computed with Q-learning (RL)
+    # print('RL pi', pi_rl)
+    if verbose:
+        print('len pi_rl :  {}'.format(len(pi_rl)))
+
+    if verbose:
+        print('pi : ')
+        print('Value Iteration')
+        print('Reinforcement Learning')
+        print('---')
+        for key in sorted(list(pi_rl)):  # Liste des clés triées (états) dans pi_rl (inclus dans pi_vi, car pi_vi exhaustif)
+            print('{} : {}'.format(key, pi_vi[key]))
+            print('{} : {}'.format(key, pi_rl[key]))
+            print('---')
+
+    print('Stats')
+    equal = 0.
+    n = len(pi_rl)
+    for state in list(pi_rl):  # Liste des clés  pi_rl (inclus dans pi_vi, car pi_vi exhaustif)
+        if pi_vi[state] == pi_rl[state]:
+            equal += 1
+
+    print('Egalités : {0:.2f} %'.format(equal / n))
+    print('---')
+
+    # pi = {}
+    # rl.explorationProb = 0
+    # action = rl.getAction(state)
+    # pi[state] = action
+    # print('RL pi', pi)
+    # print(mdp.succAndProbReward(state, action))
+
     # rl = submission.QLearningAlgorithm(mdp.actions, mdp.discount(),
     #                                    submission.identityFeatureExtractor,
     #                                    0.2)
@@ -373,14 +455,30 @@ def simulate_QL_over_MDP(mdp, featureExtractor):
 
 def blackjackFeatureExtractor(state, action):
     total, nextCard, counts = state
-
     # BEGIN_YOUR_CODE (our solution is 8 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+
+    features = []  # Liste de type tuple (featureKey, featureValue)
+    # -- Indicator for the action and the current total (1 feature).
+    features.append(((action, total), 1))
+
+    if counts is not None:
+        # -- Indicator for the action and the presence/absence of each face value in the deck.
+        presence = list(counts)
+        for i in range(len(presence)):
+            if presence[i] > 0:
+                presence[i] = 1
+        features.append((tuple(presence), 1))
+        # -- Indicators for the action and the number of cards remaining with each face value (len(counts) features).
+        features.append((len(counts), 1))
+    print(features)
+    return features
+
     # END_YOUR_CODE
 
 
 ############################################################
 # Problem 4d: What happens when the MDP changes underneath you?!
+
 
 
 # Original mdp
