@@ -217,12 +217,11 @@ grader.addManualPart(
 
 
 def run4bHelper():
-    submission.simulate_QL_over_MDP(submission.smallMDP, submission.identityFeatureExtractor,
-                                    verbose=False)
+    # 4b : identityFeatureExtractor
+    # submission.simulate_QL_over_MDP(submission.smallMDP, submission.identityFeatureExtractor,
+    #                                 verbose=True)
     submission.simulate_QL_over_MDP(submission.largeMDP, submission.identityFeatureExtractor,
                                     verbose=False)
-    print('RL peut performant, mais la fonction choisie Phi est particulièrement peu généralisable \
-    (fonction indicatrice de (s,a))')
 
 
 grader.addBasicPart('4b-helper', run4bHelper, 0, maxSeconds=3600,
@@ -248,6 +247,23 @@ def test4c():
 
 grader.addBasicPart('4c-basic', test4c, 5, maxSeconds=10,
                     description="Basic test for blackjackFeatureExtractor.  Runs QLearningAlgorithm using blackjackFeatureExtractor, then checks to see that Q-values are correct.")
+
+
+def run4cHelper():
+    # 4c : blackjackFeatureExtractor
+    # submission.simulate_QL_over_MDP(submission.smallMDP, submission.blackjackFeatureExtractor,
+    #                                 verbose=True)
+    submission.simulate_QL_over_MDP(submission.largeMDP, submission.blackjackFeatureExtractor,
+                                    verbose=False)
+    # Bizarre, je m'attendais à être beaucoup plus proche de pi_vi...
+    # meilleur taux de réussite pour pour explorationProb = 0.05
+    # mais on gagne à peine 3 points par rapport identityFeatureExtractor
+    # 67.3%
+
+
+grader.addBasicPart('4c-helper', run4cHelper, 0, maxSeconds=3600,
+                    description="Helper function to run Q-learning simulations for question 4c.")
+
 
 grader.addManualPart(
     '4d', 4, description="Written question: reward comparison for applying policy to baseline and modified MDP")
