@@ -218,8 +218,8 @@ grader.addManualPart(
 
 def run4bHelper():
     # 4b : identityFeatureExtractor
-    # submission.simulate_QL_over_MDP(submission.smallMDP, submission.identityFeatureExtractor,
-    #                                 verbose=True)
+    submission.simulate_QL_over_MDP(submission.smallMDP, submission.identityFeatureExtractor,
+                                    verbose=False)
     submission.simulate_QL_over_MDP(submission.largeMDP, submission.identityFeatureExtractor,
                                     verbose=False)
 
@@ -251,8 +251,8 @@ grader.addBasicPart('4c-basic', test4c, 5, maxSeconds=10,
 
 def run4cHelper():
     # 4c : blackjackFeatureExtractor
-    # submission.simulate_QL_over_MDP(submission.smallMDP, submission.blackjackFeatureExtractor,
-    #                                 verbose=True)
+    submission.simulate_QL_over_MDP(submission.smallMDP, submission.blackjackFeatureExtractor,
+                                    verbose=False)
     submission.simulate_QL_over_MDP(submission.largeMDP, submission.blackjackFeatureExtractor,
                                     verbose=False)
     # Bizarre, je m'attendais à être beaucoup plus proche de pi_vi...
