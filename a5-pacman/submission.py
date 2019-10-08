@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 from util import manhattanDistance
 from game import Directions
-import random, util
+import random
+import util
 
 from game import Agent
+
 
 class ReflexAgent(Agent):
   """
@@ -13,10 +16,10 @@ class ReflexAgent(Agent):
     it in any way you see fit, so long as you don't touch our method
     headers.
   """
+
   def __init__(self):
     self.lastPositions = []
     self.dc = None
-
 
   def getAction(self, gameState):
     """
@@ -64,8 +67,7 @@ class ReflexAgent(Agent):
     scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
     bestScore = max(scores)
     bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
-    chosenIndex = random.choice(bestIndices) # Pick randomly among the best
-
+    chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
 
     return legalMoves[chosenIndex]
 
@@ -99,6 +101,7 @@ def scoreEvaluationFunction(currentGameState):
   """
   return currentGameState.getScore()
 
+
 class MultiAgentSearchAgent(Agent):
   """
     This class provides some common elements to all of your
@@ -114,13 +117,14 @@ class MultiAgentSearchAgent(Agent):
     is another abstract class.
   """
 
-  def __init__(self, evalFn = 'scoreEvaluationFunction', depth = '2'):
-    self.index = 0 # Pacman is always agent index 0
+  def __init__(self, evalFn='scoreEvaluationFunction', depth='2'):
+    self.index = 0  # Pacman is always agent index 0
     self.evaluationFunction = util.lookup(evalFn, globals())
     self.depth = int(depth)
 
 ######################################################################################
 # Problem 1b: implementing minimax
+
 
 class MinimaxAgent(MultiAgentSearchAgent):
   """
@@ -163,11 +167,88 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
 
     # BEGIN_YOUR_CODE (our solution is 26 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+
+    # Profondeur de la recherche en cours
+    currentDepth = self.depth
+
+    # Cette fonction sera appelée pour pacman seulement
+    agentIndex = 0
+
+    def recurse(gameState, agentIndex, currentDepth):
+      """
+      Renvoie un tuple (utility, action)
+      Doit être valable quelque soit le type d'agent
+      """
+      # Nombre total d'agents dans le jeu
+      numAgents = gameState.getNumAgents()
+      # print 'numAgents : ', numAgents
+      # print 'agentIndex , currentDepth: ', agentIndex, currentDepth
+
+      legalMoves = gameState.getLegalActions(agentIndex)
+      # Returns a list of legal actions for an agent
+      # agentIndex=0 means Pacman, ghosts are >= 1
+      # Collect legal moves and successor states
+      # legal_moves_pacman = legal_moves[0]
+
+      # Cas des feuilles ultimes de notre arbre de décision
+      if gameState.isWin():
+        return (gameState.getScore(), None)
+      if gameState.isLose():
+        return (gameState.getScore(), None)
+      if legalMoves is None:  # ??? ###
+        # Cas où il n'y a plus de mouvement possible
+        return (gameState.getScore(), None)  # On a perdu???
+
+      # Cas des `feuilles` atteintes après d_max, profondeur maximale à laquelle on fait la recherche
+      # Ici on fait appel à notre fonction d'évaluation de la situation
+      # Toujours évaluée du point de vue de pacman
+      if currentDepth == 0:
+        # Choose one of the best actions
+        scores = [self.evaluationFunction(gameState) for action in legalMoves]
+        bestScore = max(scores)
+        bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
+        chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
+        return (bestScore, legalMoves[chosenIndex])
+
+      # Cas principal où l'on reste dans la boucle de récurrence
+      # Liste des candidats (utilité, action) pour le déplacement
+      # Candidates =  list of pairs of
+      #               utility of successor state and action leading to that successor
+
+      if agentIndex == 0:  # Pacman
+        candidates = []
+        for action in legalMoves:
+          nextGameState = gameState.generateSuccessor(agentIndex, action)
+          utility_succ, action_succ = recurse(nextGameState, agentIndex + 1, currentDepth)
+          candidates.append((utility_succ, action))
+        # print max(candidates)  # max sur un tuple <=> max sur la première valeur
+        return max(candidates)  # max sur un tuple <=> max sur la première valeur
+      elif agentIndex == numAgents - 1:  # Dernier fantôme à considérer
+        candidates = []
+        for action in legalMoves:
+          nextGameState = gameState.generateSuccessor(agentIndex, action)
+          utility_succ, action_succ = recurse(nextGameState, 0, currentDepth - 1)  # On repasse à Pacman
+          candidates.append((utility_succ, action))
+        # print min(candidates)
+        return min(candidates)
+      else:  # Tous les autres fantômes
+        candidates = []
+        for action in legalMoves:
+          nextGameState = gameState.generateSuccessor(agentIndex, action)
+          utility_succ, action_succ = recurse(nextGameState, agentIndex + 1, currentDepth)
+          candidates.append((utility_succ, action))
+        # print min(candidates)
+        return min(candidates)
+
+    utility, action = recurse(gameState, agentIndex, currentDepth)
+    # print 'utility : ', utility
+
+    return action
     # END_YOUR_CODE
 
 ######################################################################################
 # Problem 2a: implementing alpha-beta
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
   """
@@ -185,6 +266,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
 ######################################################################################
 # Problem 3b: implementing expectimax
+
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
   """
@@ -206,6 +288,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 ######################################################################################
 # Problem 4a (extra credit): creating a better evaluation function
 
+
 def betterEvaluationFunction(currentGameState):
   """
     Your extreme, unstoppable evaluation function (problem 4).
@@ -216,6 +299,7 @@ def betterEvaluationFunction(currentGameState):
   # BEGIN_YOUR_CODE (our solution is 26 lines of code, but don't worry if you deviate from this)
   raise Exception("Not implemented yet")
   # END_YOUR_CODE
+
 
 # Abbreviation
 better = betterEvaluationFunction

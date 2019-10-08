@@ -2,7 +2,7 @@
 # python 3.7
 
 # -----------------------------------
-# Modèle du jeu
+# Modélisation du jeu
 # -----------------------------------
 
 
@@ -68,7 +68,7 @@ def human_policy(game, state):
             return action
 
 
-def minimax_policy(game, action):
+def minimax_policy(game, state):
     """
     Compute the value at a given state as well as what is the optimal action
     """
@@ -78,12 +78,14 @@ def minimax_policy(game, action):
             return (game.utility(state), None)
         # Candidates =  list of pairs of
         #               utility of successor state and action leading to that successor
+        # Recurse renvoie un candidat (associé à min ou max de l'utilité suivant le cas)
+        # candidat = (utilité, action)
         candidates = [
             (recurse(game.successor(state, action))[0], action)
             for action in game.actions(state)
         ]
         if player == +1:
-            return max(candidates)
+            return max(candidates)  # max sur un tuple <=> max sur la première valeur
         elif player == -1:
             return min(candidates)
         assert False
