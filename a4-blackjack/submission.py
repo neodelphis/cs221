@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 from __future__ import division # Force les divisions d'entiers à être des rééls
 import util, math, random
 from collections import defaultdict
@@ -93,8 +93,8 @@ class BlackjackMDP(util.MDP):
         state : ( total_card_value_in_hand ,
                   next_card_index_if_peeked,
                   deck_card_count )
-        deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values 
-                          et le nombre correspond au nb de cartes de ce type restantes dans la pioche 
+        deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values
+                          et le nombre correspond au nb de cartes de ce type restantes dans la pioche
         """
         results = []
 
@@ -167,7 +167,7 @@ class BlackjackMDP(util.MDP):
                 # deux cas de figure:
                 # 1- Elle est de valeur trop haute et la somme des cartes de notre main est supérieure au seuil
                 #    on a une récompense totale de 0 et on est dirigé vers un état final
-                # 2- Elle n'est pas trop haute et on peut continuer le jeu 
+                # 2- Elle n'est pas trop haute et on peut continuer le jeu
                 #    sauf s'il ne reste plus de cartes dans la pioche
 
                 # Liste des états atteignables
@@ -181,7 +181,7 @@ class BlackjackMDP(util.MDP):
                         if new_total_card_value_in_hand > self.threshold:
                             new_state = ( new_total_card_value_in_hand ,
                                           None,
-                                          None ) 
+                                          None )
                         # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
                         else:
                             # On supprime une carte dans `deck_card_count`
@@ -192,13 +192,13 @@ class BlackjackMDP(util.MDP):
                                 # La récompense devient la main en cours et fin
                                 reward = new_total_card_value_in_hand
                                 new_deck_card_count = None
-                            
+
                             # Dans tous les cas
                             new_state = ( new_total_card_value_in_hand ,
                                           None,
                                           new_deck_card_count )
-                          
-                        
+
+
                         results.append((new_state, probability, reward))
 
             # Cas où l'on a regardé une carte le tour précédent
@@ -212,7 +212,7 @@ class BlackjackMDP(util.MDP):
                     reward = 0
                     results.append((new_state, probability, reward))
 
-                # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+                # 2- On pioche une carte dont la valeur ne nous fait pas dépasser le seuil
                 else :
                     probability = 1
                     new_deck_card_count = remove_card(deck_card_count, next_card_index_if_peeked)
@@ -225,7 +225,7 @@ class BlackjackMDP(util.MDP):
                         new_deck_card_count = None
 
                     new_state = ( new_total_card_value_in_hand , None, new_deck_card_count )
-                    results.append((new_state, probability, reward))                
+                    results.append((new_state, probability, reward))
 
             # Dans tous les cas
             return results
