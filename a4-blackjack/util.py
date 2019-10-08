@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
-import collections, random
+import collections
+import random
 
 ############################################################
 
 # An algorithm that solves an MDP (i.e., computes the optimal
 # policy).
+
+
 class MDPAlgorithm:
     # Set:
     # - self.pi: optimal policy (mapping from state to action)
@@ -13,6 +16,8 @@ class MDPAlgorithm:
     def solve(self, mdp): raise NotImplementedError("Override me")
 
 ############################################################
+
+
 class ValueIteration(MDPAlgorithm):
     '''
     Solve the MDP using value iteration.  Your solve() method must set
@@ -22,12 +27,14 @@ class ValueIteration(MDPAlgorithm):
     all of the values change by less than epsilon.
     The ValueIteration class is a subclass of util.MDPAlgorithm (see util.py).
     '''
+
     def solve(self, mdp, epsilon=0.001):
         mdp.computeStates()
+
         def computeQ(mdp, V, state, action):
             # Return Q(state, action) based on V(state).
-            Qvalue =  sum(prob * (reward + mdp.discount() * V[newState]) \
-                            for newState, prob, reward in mdp.succAndProbReward(state, action))
+            Qvalue = sum(prob * (reward + mdp.discount() * V[newState])
+                         for newState, prob, reward in mdp.succAndProbReward(state, action))
             # print('Qvalue : ',Qvalue)
             return Qvalue
 
@@ -64,6 +71,8 @@ class ValueIteration(MDPAlgorithm):
         self.V = V
 
 # An abstract class representing a Markov Decision Process (MDP).
+
+
 class MDP:
     # Return the start state.
     def startState(self): raise NotImplementedError("Override me")
@@ -103,16 +112,23 @@ class MDP:
 # A simple example of an MDP where states are integers in [-n, +n].
 # and actions involve moving left and right by one position.
 # We get rewarded for going to the right.
+
+
 class NumberLineMDP(MDP):
     def __init__(self, n=5): self.n = n
+
     def startState(self): return 0
+
     def actions(self, state): return [-1, +1]
+
     def succAndProbReward(self, state, action):
         return [(state, 0.4, 0),
                 (min(max(state + action, -self.n), +self.n), 0.6, state)]
+
     def discount(self): return 0.9
 
 ############################################################
+
 
 mdp = NumberLineMDP()
 algorithm = ValueIteration()
@@ -140,6 +156,8 @@ class RLAlgorithm:
 
 # An RL algorithm that acts according to a fixed policy |pi| and doesn't
 # actually do any learning.
+
+
 class FixedRLAlgorithm(RLAlgorithm):
     def __init__(self, pi): self.pi = pi
 
@@ -156,6 +174,8 @@ class FixedRLAlgorithm(RLAlgorithm):
 # RL algorithm according to the dynamics of the MDP.
 # Each trial will run for at most |maxIterations|.
 # Return the list of rewards that we get for each trial.
+
+
 def simulate(mdp, rl, numTrials=10, maxIterations=1000, verbose=False,
              sort=False):
     # Return i in [0, ..., len(probs)-1] with probability probs[i].
@@ -164,7 +184,8 @@ def simulate(mdp, rl, numTrials=10, maxIterations=1000, verbose=False,
         accum = 0
         for i, prob in enumerate(probs):
             accum += prob
-            if accum >= target: return i
+            if accum >= target:
+                return i
         raise Exception("Invalid probs: %s" % probs)
 
     totalRewards = []  # The rewards we get on each trial
@@ -176,7 +197,8 @@ def simulate(mdp, rl, numTrials=10, maxIterations=1000, verbose=False,
         for _ in range(maxIterations):
             action = rl.getAction(state)
             transitions = mdp.succAndProbReward(state, action)
-            if sort: transitions = sorted(transitions)
+            if sort:
+                transitions = sorted(transitions)
             if len(transitions) == 0:
                 rl.incorporateFeedback(state, action, 0, None)
                 break
