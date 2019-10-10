@@ -1,0 +1,90 @@
+
+********************************
+MinimaxAgent
+mediumClassic
+depth=4
+********************************
+
+python pacman.py -p MinimaxAgent -l mediumClassic -a depth=4 -q -n 10
+Pacman died! Score: 50
+Pacman died! Score: 215
+Pacman died! Score: -369
+Pacman died! Score: -1118
+Pacman died! Score: -208
+Pacman died! Score: -7
+Pacman died! Score: -98
+Pacman died! Score: 267
+Pacman died! Score: 338
+Pacman died! Score: -71
+Average Score: -100.1
+Scores:        50, 215, -369, -1118, -208, -7, -98, 267, 338, -71
+Win Rate:      0/10 (0.00)
+Record:        Loss, Loss, Loss, Loss, Loss,
+
+
+
+********************************
+MinimaxAgent
+smallClassic
+depth=4
+********************************
+
+python pacman.py -p MinimaxAgent -l smallClassic -a depth=4 -q -n 10
+Pacman died! Score: -264
+Pacman died! Score: -292
+Pacman died! Score: 54
+Pacman emerges victorious! Score: 1180
+Pacman died! Score: 117
+Pacman emerges victorious! Score: 1335
+Pacman emerges victorious! Score: 975
+Pacman died! Score: -187
+Pacman died! Score: 72
+Pacman died! Score: -124
+Average Score: 286.6
+Scores:        -264, -292, 54, 1180, 117, 1335, 975, -187, 72, -124
+Win Rate:      3/10 (0.30)
+Record:        Loss, Loss, Loss, Win, Loss, Win, Win, Loss, Loss, Loss
+
+python pacman.py -p MinimaxAgent -l smallClassic -a depth=4 -q -n 50
+Average Score: 665.18
+Scores:        1165, 1150, 981, 966, 146, 965, 1367, 110, 394, -467, 979, 1300, -349, 1089, 342, -257, 1344, 254, 949, 1164, 1378, -200, 941, -307, 1180, 390, 274, 911, 1371, 1319, 1132, 1528, 1554, 37, 916, 604, -147, 966, 1168, 412, 901, -215, 975, -235, 1162, -91, -215, 969, 1149, -160
+Win Rate:      29/50 (0.58)
+Record:        Win, Win, Win, Win, Loss, Win, Win, Loss, Loss, Loss, Win, Win, Loss, Win, Loss, Loss, Win, Loss, Win, Win, Win, Loss, Win, Loss, Win, Loss, Loss, Win, Win, Win, Win, Win, Win, Loss, Win, Loss, Loss, Win, Win, Loss, Win, Loss, Win, Loss, Win, Loss, Loss, Win, Win, Loss
+
+
+
+
+********************************
+AlphaBetaAgent
+smallClassic
+depth=6
+********************************
+python pacman.py -p AlphaBetaAgent -l smallClassic -a depth=6 -q -n 10
+Pacman died! Score: -108
+Pacman emerges victorious! Score: 969
+Pacman died! Score: 198
+Pacman died! Score: 234
+Pacman emerges victorious! Score: 973
+Pacman died! Score: -200
+Pacman died! Score: -27
+Pacman died! Score: 293
+Pacman emerges victorious! Score: 1383
+Pacman emerges victorious! Score: 1371
+Average Score: 508.6
+Scores:        -108, 969, 198, 234, 973, -200, -27, 293, 1383, 1371
+Win Rate:      4/10 (0.40)
+Record:        Loss, Win, Loss, Loss, Win, Loss, Loss, Loss, Win, Win
+
+
+python pacman.py -p AlphaBetaAgent -l smallClassic -a depth=6 -q -n 50
+Average Score: 681.76
+Scores:        -70, 949, 52, 1366, 1065, 339, 985, 1556, 716, 1754, -242, 345, 1759, 1553, -185, -81, 37, -367, -387, 389, 633, 1377, 1165, 1361, 121, 480, 330, 1563, 979, 114, 955, 921, 185, 971, 1363, 601, 1543, 979, 285, 105, -62, 1372, 1368, 1531, -36, 168, 133, 294, 23, 1733
+Win Rate:      23/50 (0.46)
+Record:        Loss, Win, Loss, Win, Win, Loss, Win, Win, Loss, Win, Loss, Loss, Win, Win, Loss, Loss, Loss, Loss, Loss, Loss, Loss, Win, Win, Win, Loss, Loss, Loss, Win, Win, Loss, Win, Win, Loss, Win, Win, Loss, Win, Win, Loss, Loss, Loss, Win, Win, Win, Loss, Loss, Loss, Loss, Loss, Win
+python pacman.py -p AlphaBetaAgent -l smallClassic -a depth=6 -q -n 50
+
+python pacman.py -p AlphaBetaAgent -l smallClassic -a depth=4 -q -n 50
+Average Score: 302.06
+Scores:        1339, -106, -154, 102, 1333, -514, -350, 1311, 45, -149, 338, 272, 1730, -239, 975, 319, -396, -49, 553, 1342, 970, 973, -134, -167, 938, 110, -396, -320, 33, 465, 914, -309, -239, 838, 1096, 712, 1334, -32, 1285, 1359, -291, -144, -166, 100, -284, -379, -561, -211, -347, 254
+Win Rate:      16/50 (0.32)
+Record:        Win, Loss, Loss, Loss, Win, Loss, Loss, Win, Loss, Loss, Loss, Loss, Win, Loss, Win, Loss, Loss, Loss, Win, Win, Win, Win, Loss, Loss, Win, Loss, Loss, Loss, Loss, Loss, Win, Loss, Loss, Win, Win, Loss, Win, Loss, Win, Win, Loss, Loss, Loss, Loss, Loss, Loss, Loss, Loss, Loss, Loss

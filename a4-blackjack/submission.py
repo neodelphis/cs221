@@ -422,7 +422,6 @@ def simulate_QL_over_MDP(mdp, featureExtractor, verbose=False):
     # -- Indicators for the action and the number of cards remaining with each face value (len(counts) features).
     #       Note: only add these features if the deck is not None.
 
-
 def blackjackFeatureExtractor(state, action):
     total, nextCard, counts = state
     # BEGIN_YOUR_CODE (our solution is 8 lines of code, but don't worry if you deviate from this)
