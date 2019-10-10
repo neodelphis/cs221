@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+<<<<<<< HEAD
+from __future__ import division # Force les divisions d'entiers à être des rééls
+import util, math, random
+=======
 from __future__ import division  # Force les divisions d'entiers à être des rééls
 import util
 import math
 import random
 import pprint
+>>>>>>> effcb81cdcc1e739e4aa3e201e4e5b82ae1c3c9f
 from collections import defaultdict
 from util import ValueIteration
 
@@ -100,7 +105,11 @@ class BlackjackMDP(util.MDP):
         state : ( total_card_value_in_hand ,
                   next_card_index_if_peeked,
                   deck_card_count )
+<<<<<<< HEAD
+        deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values
+=======
         deck_card_count : liste dont l'index correspond à la valeur de la carte dans la liste `card_values`
+>>>>>>> effcb81cdcc1e739e4aa3e201e4e5b82ae1c3c9f
                           et le nombre correspond au nb de cartes de ce type restantes dans la pioche
         """
         results = []
@@ -188,10 +197,17 @@ class BlackjackMDP(util.MDP):
                         reward = 0
                         # 1- On pioche une carte trop haute
                         if new_total_card_value_in_hand > self.threshold:
+<<<<<<< HEAD
+                            new_state = ( new_total_card_value_in_hand ,
+                                          None,
+                                          None )
+                        # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
+=======
                             new_state = (new_total_card_value_in_hand,
                                          None,
                                          None)
                         # 2- On pioche une carte dont la valeur ne nous fait pas dépasser le seuil
+>>>>>>> effcb81cdcc1e739e4aa3e201e4e5b82ae1c3c9f
                         else:
                             # On supprime une carte dans `deck_card_count`
                             new_deck_card_count = remove_card(
@@ -204,9 +220,16 @@ class BlackjackMDP(util.MDP):
                                 new_deck_card_count = None
 
                             # Dans tous les cas
+<<<<<<< HEAD
+                            new_state = ( new_total_card_value_in_hand ,
+                                          None,
+                                          new_deck_card_count )
+
+=======
                             new_state = (new_total_card_value_in_hand,
                                          None,
                                          new_deck_card_count)
+>>>>>>> effcb81cdcc1e739e4aa3e201e4e5b82ae1c3c9f
 
                         results.append((new_state, probability, reward))
 
@@ -221,8 +244,13 @@ class BlackjackMDP(util.MDP):
                     reward = 0
                     results.append((new_state, probability, reward))
 
+<<<<<<< HEAD
+                # 2- On pioche une carte dont la valeur ne nous fait pas dépasser le seuil
+                else :
+=======
                 # 2- On pioche une carte dont la valeur ne nous fais pas dépasser le seuil
                 else:
+>>>>>>> effcb81cdcc1e739e4aa3e201e4e5b82ae1c3c9f
                     probability = 1
                     new_deck_card_count = remove_card(
                         deck_card_count, next_card_index_if_peeked)
@@ -234,8 +262,12 @@ class BlackjackMDP(util.MDP):
                         reward = new_total_card_value_in_hand
                         new_deck_card_count = None
 
+<<<<<<< HEAD
+                    new_state = ( new_total_card_value_in_hand , None, new_deck_card_count )
+=======
                     new_state = (new_total_card_value_in_hand,
                                  None, new_deck_card_count)
+>>>>>>> effcb81cdcc1e739e4aa3e201e4e5b82ae1c3c9f
                     results.append((new_state, probability, reward))
 
             # Dans tous les cas

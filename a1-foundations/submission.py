@@ -90,7 +90,7 @@ def mutateSentences(sentence):
     unique_words = sorted(set(words))
 
     # dictionnaire des continuations possibles
-    dict_authorized = {} 
+    dict_authorized = {}
     # dict_authorized[word] = [list of accepted words] = accepted_continuation
     accepted_continuation = []
 
@@ -110,7 +110,7 @@ def mutateSentences(sentence):
 
     for i in range(n-1):
         sentences_list = completeSentences(sentences_list, dict_authorized)
-    
+
     print('sentences_list ' , sentences_list)
 
     return sentences_list
@@ -130,9 +130,9 @@ def sparseVectorDotProduct(v1, v2):
     This function will be useful later for linear classifiers.
     """
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
-    
+
     dot_product = 0
-    
+
     for key in v1.keys():                      # On parcourt la liste des clés de v1
         if key in v2:                          # Si la clé est aussi dans v2
             dot_product += v1[key] * v2[key]   # On met à jour le produit sclaire
@@ -159,13 +159,13 @@ def incrementSparseVector(v1, scale, v2):
 
         # test superflu, mais peut être un changement de type des données ci dessus
         #if key in v:
-        #    v[key] += scale * v2[key] 
+        #    v[key] += scale * v2[key]
         #else:
         #    v[key] = scale * v2[key]
     #print(v)
-    
+
     return v
-    
+
     # END_YOUR_CODE
 
 ############################################################
@@ -178,9 +178,9 @@ def findSingletonWords(text):
     You might find it useful to use collections.defaultdict(int). Bah non pourquoi faire?
     """
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
-    
+
     singleton = []
-    
+
     text = text.split()
     unique_words = sorted(set(text))
 
@@ -241,27 +241,10 @@ def computeLongestPalindromeLength(text):
     # tests dev
     #print('dictionary :', sorted(dictionary.items()))
     #print('count :', count)
-    
+
     return count
 
 
     # END_YOUR_CODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
