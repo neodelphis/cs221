@@ -202,7 +202,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
             # Cas principal où l'on reste dans la boucle de récurrence
             # Choix du max ou du min selon pacman/ghost dans
-            # une liste des candidats (utilité du successeur, action qui mène à ce successeur)
+            # une liste des candidats : [(utilité du successeur, action qui mène à ce successeur)]
             if agentIndex == 0:  # Pacman
                 candidates = []
                 for action in legalMoves:
@@ -211,21 +211,36 @@ class MinimaxAgent(MultiAgentSearchAgent):
                     candidates.append((utility_succ, action))
                 # En fait l'utilité maximale du successeur remonte d'un niveau
                 # car il n'y a pas de modification de l'utilité dans ce modèle
-                return max(candidates)  # max sur un tuple <=> max sur la première valeur
-            elif agentIndex == numAgents - 1:  # Dernier fantôme à considérer
+                return max(candidates)  # max sur un tuple <=> max sur la première valeur ici utilité
+            else:  # Cas des fantômes
+                # Gestion des joueurs et de la profondeur de recherche
+                if agentIndex == numAgents - 1:  # Dernier fantôme à considérer
+                    nextAgentIndex = 0  # On repasse à Pacman
+                    currentDepth -= 1
+                else:  # Tous les autres fantômes
+                    nextAgentIndex = agentIndex + 1
+
                 candidates = []
                 for action in legalMoves:
                     nextGameState = gameState.generateSuccessor(agentIndex, action)
-                    utility_succ, _ = recurse(nextGameState, 0, currentDepth - 1)  # On repasse à Pacman
+                    utility_succ, _ = recurse(nextGameState, nextAgentIndex, currentDepth)
                     candidates.append((utility_succ, action))
                 return min(candidates)
-            else:  # Tous les autres fantômes
-                candidates = []
-                for action in legalMoves:
-                    nextGameState = gameState.generateSuccessor(agentIndex, action)
-                    utility_succ, _ = recurse(nextGameState, agentIndex + 1, currentDepth)
-                    candidates.append((utility_succ, action))
-                return min(candidates)
+
+            # elif agentIndex == numAgents - 1:  # Dernier fantôme à considérer
+            #     candidates = []
+            #     for action in legalMoves:
+            #         nextGameState = gameState.generateSuccessor(agentIndex, action)
+            #         utility_succ, _ = recurse(nextGameState, 0, currentDepth - 1)  # On repasse à Pacman
+            #         candidates.append((utility_succ, action))
+            #     return min(candidates)
+            # else:  # Tous les autres fantômes
+            #     candidates = []
+            #     for action in legalMoves:
+            #         nextGameState = gameState.generateSuccessor(agentIndex, action)
+            #         utility_succ, _ = recurse(nextGameState, agentIndex + 1, currentDepth)
+            #         candidates.append((utility_succ, action))
+            #     return min(candidates)
 
         # Code de la méthode getAction
         # Profondeur de la recherche en cours
